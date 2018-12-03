@@ -97,6 +97,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
+
+    //if the user enters custom connection info, get it.
+    if(!MainWindow::ui->custom_address->text().isEmpty() && !MainWindow::ui->custom_port->text().isEmpty())
+    {
+        client.serverport = stoi(MainWindow::ui->custom_port->text().toStdString());
+        client.hostname = MainWindow::ui->custom_address->text().toStdString();
+    }
     //open up a socket with supplied info.
     cs457::tcpClientSocket clientSock(client.serverport, client.hostname);
     //client object gets a pointer to the socket, so everthing can share it.
@@ -106,4 +113,10 @@ void MainWindow::on_pushButton_clicked()
     //Wait to verify that user is successfully registered.
     size_t success = client.registerUser();
     //If not successful, toast message?
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    //if there is text in the box, send it.
+
 }

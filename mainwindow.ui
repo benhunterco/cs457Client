@@ -27,7 +27,7 @@
      <item>
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
-        <number>5</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
@@ -136,17 +136,23 @@
      <string>Connect</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="parameters">
+   <widget class="QLineEdit" name="custom_address">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>301</width>
+      <width>121</width>
       <height>25</height>
      </rect>
     </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
     <property name="text">
-     <string>Custom parameters here, or default.</string>
+     <string/>
+    </property>
+    <property name="placeholderText">
+     <string>Address:127.0.0.1</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit">
@@ -175,6 +181,22 @@
      <string>Send</string>
     </property>
    </widget>
+   <widget class="QLineEdit" name="custom_port">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>0</y>
+      <width>113</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="placeholderText">
+     <string>Port:2000</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -182,7 +204,7 @@
      <x>0</x>
      <y>0</y>
      <width>420</width>
-     <height>22</height>
+     <height>17</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuChat_App">
