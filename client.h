@@ -20,7 +20,7 @@ class client
     //port on which to open up the socket. 
     int serverport = 2000;
     //if set in command line arguments, overwrites all other relevant params.
-    std::string configFile = "chatclient.conf";
+    std::string configFile = "conf/chatclient.conf";
 
     //the following are not yet used.
     std::string testFile = "";

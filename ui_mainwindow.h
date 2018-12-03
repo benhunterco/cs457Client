@@ -48,9 +48,10 @@ public:
     QWidget *tab_6;
     QPlainTextEdit *plainTextEdit_6;
     QPushButton *pushButton;
-    QLineEdit *parameters;
+    QLineEdit *custom_address;
     QLineEdit *lineEdit;
     QPushButton *pushButton_2;
+    QLineEdit *custom_port;
     QMenuBar *menuBar;
     QMenu *menuChat_App;
     QToolBar *mainToolBar;
@@ -115,19 +116,23 @@ public:
         pushButton = new QPushButton(centralWidget);
         pushButton->setObjectName(QStringLiteral("pushButton"));
         pushButton->setGeometry(QRect(320, 0, 89, 25));
-        parameters = new QLineEdit(centralWidget);
-        parameters->setObjectName(QStringLiteral("parameters"));
-        parameters->setGeometry(QRect(0, 0, 301, 25));
+        custom_address = new QLineEdit(centralWidget);
+        custom_address->setObjectName(QStringLiteral("custom_address"));
+        custom_address->setGeometry(QRect(0, 0, 121, 25));
+        custom_address->setAutoFillBackground(false);
         lineEdit = new QLineEdit(centralWidget);
         lineEdit->setObjectName(QStringLiteral("lineEdit"));
         lineEdit->setGeometry(QRect(0, 250, 311, 25));
         pushButton_2 = new QPushButton(centralWidget);
         pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
         pushButton_2->setGeometry(QRect(320, 250, 89, 25));
+        custom_port = new QLineEdit(centralWidget);
+        custom_port->setObjectName(QStringLiteral("custom_port"));
+        custom_port->setGeometry(QRect(130, 0, 113, 21));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 420, 22));
+        menuBar->setGeometry(QRect(0, 0, 420, 17));
         menuChat_App = new QMenu(menuBar);
         menuChat_App->setObjectName(QStringLiteral("menuChat_App"));
         MainWindow->setMenuBar(menuBar);
@@ -142,7 +147,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(5);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -158,9 +163,12 @@ public:
         tabWidget->setTabText(tabWidget->indexOf(tab_5), QApplication::translate("MainWindow", "Page", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_6), QApplication::translate("MainWindow", "Page", Q_NULLPTR));
         pushButton->setText(QApplication::translate("MainWindow", "Connect", Q_NULLPTR));
-        parameters->setText(QApplication::translate("MainWindow", "Custom parameters here, or default.", Q_NULLPTR));
+        custom_address->setText(QString());
+        custom_address->setPlaceholderText(QApplication::translate("MainWindow", "Address:127.0.0.1", Q_NULLPTR));
         lineEdit->setText(QApplication::translate("MainWindow", "Message here", Q_NULLPTR));
         pushButton_2->setText(QApplication::translate("MainWindow", "Send", Q_NULLPTR));
+        custom_port->setText(QString());
+        custom_port->setPlaceholderText(QApplication::translate("MainWindow", "Port:2000", Q_NULLPTR));
         menuChat_App->setTitle(QApplication::translate("MainWindow", "Chat App", Q_NULLPTR));
     } // retranslateUi
 
