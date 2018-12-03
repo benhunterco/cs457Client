@@ -27,7 +27,7 @@
      <item>
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
-        <number>0</number>
+        <number>3</number>
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
@@ -155,7 +155,7 @@
      <string>Address:127.0.0.1</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="command_input">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -165,7 +165,10 @@
      </rect>
     </property>
     <property name="text">
-     <string>Message here</string>
+     <string/>
+    </property>
+    <property name="placeholderText">
+     <string>message or command</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_2">
