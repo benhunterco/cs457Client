@@ -35,10 +35,10 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = Project2-client1.0.0
-DISTDIR = /home/ben/VSCodeProjects/Sockets/Project2-client/.tmp/Project2-client1.0.0
+DISTDIR = /home/ben/classes/cs457/clientGUI/.tmp/Project2-client1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1 -Wl,-rpath,/home/ben/anaconda3/lib
-LIBS          = $(SUBLIBS) -L/home/ben/anaconda3/lib -lQt5Widgets -lQt5Gui -lQt5Core -L/usr/include/GL -lpthread 
+LIBS          = $(SUBLIBS) -L/home/ben/anaconda3/lib -lQt5Widgets -lQt5Gui -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -224,7 +224,6 @@ DIST          = chatClient.out \
 		../../../anaconda3/mkspecs/features/qt_config.prf \
 		../../../anaconda3/mkspecs/linux-g++/qmake.conf \
 		../../../anaconda3/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		../../../anaconda3/mkspecs/features/exclusive_builds.prf \
 		../../../anaconda3/mkspecs/features/toolchain.prf \
 		../../../anaconda3/mkspecs/features/default_pre.prf \
@@ -423,7 +422,6 @@ Makefile: Project2-client.pro ../../../anaconda3/mkspecs/linux-g++/qmake.conf ..
 		../../../anaconda3/mkspecs/features/qt_config.prf \
 		../../../anaconda3/mkspecs/linux-g++/qmake.conf \
 		../../../anaconda3/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		../../../anaconda3/mkspecs/features/exclusive_builds.prf \
 		../../../anaconda3/mkspecs/features/toolchain.prf \
 		../../../anaconda3/mkspecs/features/default_pre.prf \
@@ -605,7 +603,6 @@ Makefile: Project2-client.pro ../../../anaconda3/mkspecs/linux-g++/qmake.conf ..
 ../../../anaconda3/mkspecs/features/qt_config.prf:
 ../../../anaconda3/mkspecs/linux-g++/qmake.conf:
 ../../../anaconda3/mkspecs/features/spec_post.prf:
-.qmake.stash:
 ../../../anaconda3/mkspecs/features/exclusive_builds.prf:
 ../../../anaconda3/mkspecs/features/toolchain.prf:
 ../../../anaconda3/mkspecs/features/default_pre.prf:
@@ -680,7 +677,10 @@ moc_predefs.h: ../../../anaconda3/mkspecs/features/data/dummy.cpp
 compiler_moc_header_make_all: moc_mainwindow.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_mainwindow.cpp
-moc_mainwindow.cpp: ../../../anaconda3/include/qt/QtWidgets/QMainWindow \
+moc_mainwindow.cpp: client.h \
+		tcpClientSocket.h \
+		Parsing.h \
+		../../../anaconda3/include/qt/QtWidgets/QMainWindow \
 		../../../anaconda3/include/qt/QtWidgets/qmainwindow.h \
 		../../../anaconda3/include/qt/QtWidgets/qtwidgetsglobal.h \
 		../../../anaconda3/include/qt/QtGui/qtguiglobal.h \
@@ -786,7 +786,7 @@ moc_mainwindow.cpp: ../../../anaconda3/include/qt/QtWidgets/QMainWindow \
 		mainwindow.h \
 		moc_predefs.h \
 		../../../anaconda3/bin/moc
-	/home/ben/anaconda3/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/ben/anaconda3/mkspecs/linux-g++ -I/home/ben/VSCodeProjects/Sockets/Project2-client -I/home/ben/anaconda3/include/qt -I/home/ben/anaconda3/include/qt/QtWidgets -I/home/ben/anaconda3/include/qt/QtGui -I/home/ben/anaconda3/include/qt/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include mainwindow.h -o moc_mainwindow.cpp
+	/home/ben/anaconda3/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/ben/anaconda3/mkspecs/linux-g++ -I/home/ben/classes/cs457/clientGUI -I/home/ben/anaconda3/include/qt -I/home/ben/anaconda3/include/qt/QtWidgets -I/home/ben/anaconda3/include/qt/QtGui -I/home/ben/anaconda3/include/qt/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include mainwindow.h -o moc_mainwindow.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -808,6 +808,9 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 ####### Compile
 
 main.o: main.cpp mainwindow.h \
+		client.h \
+		tcpClientSocket.h \
+		Parsing.h \
 		../../../anaconda3/include/qt/QtWidgets/QMainWindow \
 		../../../anaconda3/include/qt/QtWidgets/qmainwindow.h \
 		../../../anaconda3/include/qt/QtWidgets/qtwidgetsglobal.h \
@@ -920,7 +923,11 @@ main.o: main.cpp mainwindow.h \
 		../../../anaconda3/include/qt/QtGui/qinputmethod.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
-mainwindow.o: mainwindow.cpp mainwindow.h \
+mainwindow.o: mainwindow.cpp tcpUserSocket.h \
+		tcpClientSocket.h \
+		Parsing.h \
+		client.h \
+		mainwindow.h \
 		../../../anaconda3/include/qt/QtWidgets/QMainWindow \
 		../../../anaconda3/include/qt/QtWidgets/qmainwindow.h \
 		../../../anaconda3/include/qt/QtWidgets/qtwidgetsglobal.h \
@@ -1061,9 +1068,10 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../../anaconda3/include/qt/QtGui/qtextformat.h \
 		../../../anaconda3/include/qt/QtGui/qpen.h \
 		../../../anaconda3/include/qt/QtGui/qtextoption.h \
+		../../../anaconda3/include/qt/QtWidgets/QMenu \
+		../../../anaconda3/include/qt/QtWidgets/qmenu.h \
 		../../../anaconda3/include/qt/QtWidgets/QMenuBar \
 		../../../anaconda3/include/qt/QtWidgets/qmenubar.h \
-		../../../anaconda3/include/qt/QtWidgets/qmenu.h \
 		../../../anaconda3/include/qt/QtWidgets/QPlainTextEdit \
 		../../../anaconda3/include/qt/QtWidgets/qplaintextedit.h \
 		../../../anaconda3/include/qt/QtWidgets/qtextedit.h \

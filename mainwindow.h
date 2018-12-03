@@ -16,6 +16,9 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     //Here is the client object. It does all the keeping track of statey stuff.

@@ -88,7 +88,22 @@ MainWindow::MainWindow(QWidget *parent) :
     
 }
 
+
+
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    //open up a socket with supplied info.
+    cs457::tcpClientSocket clientSock(client.serverport, client.hostname);
+    //client object gets a pointer to the socket, so everthing can share it.
+    //threads don't complain about pointers either, which used to be a problem for me.
+    client.sock = &clientSock;
+    //register the user. This call is not threaded.
+    //Wait to verify that user is successfully registered.
+    size_t success = client.registerUser();
+    //If not successful, toast message?
 }
