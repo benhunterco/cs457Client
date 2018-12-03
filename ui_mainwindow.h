@@ -1,0 +1,175 @@
+/********************************************************************************
+** Form generated from reading UI file 'mainwindow.ui'
+**
+** Created by: Qt User Interface Compiler version 5.9.5
+**
+** WARNING! All changes made in this file will be lost when recompiling UI file!
+********************************************************************************/
+
+#ifndef UI_MAINWINDOW_H
+#define UI_MAINWINDOW_H
+
+#include <QtCore/QVariant>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPlainTextEdit>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTabWidget>
+#include <QtWidgets/QToolBar>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QWidget>
+
+QT_BEGIN_NAMESPACE
+
+class Ui_MainWindow
+{
+public:
+    QWidget *centralWidget;
+    QWidget *verticalLayoutWidget;
+    QVBoxLayout *verticalLayout;
+    QTabWidget *tabWidget;
+    QWidget *tab;
+    QPlainTextEdit *plainTextEdit;
+    QWidget *tab_2;
+    QPlainTextEdit *plainTextEdit_2;
+    QWidget *tab_3;
+    QPlainTextEdit *plainTextEdit_3;
+    QWidget *tab_4;
+    QPlainTextEdit *plainTextEdit_4;
+    QWidget *tab_5;
+    QPlainTextEdit *plainTextEdit_5;
+    QWidget *tab_6;
+    QPlainTextEdit *plainTextEdit_6;
+    QPushButton *pushButton;
+    QLineEdit *parameters;
+    QLineEdit *lineEdit;
+    QPushButton *pushButton_2;
+    QMenuBar *menuBar;
+    QMenu *menuChat_App;
+    QToolBar *mainToolBar;
+    QStatusBar *statusBar;
+
+    void setupUi(QMainWindow *MainWindow)
+    {
+        if (MainWindow->objectName().isEmpty())
+            MainWindow->setObjectName(QStringLiteral("MainWindow"));
+        MainWindow->resize(420, 343);
+        centralWidget = new QWidget(MainWindow);
+        centralWidget->setObjectName(QStringLiteral("centralWidget"));
+        verticalLayoutWidget = new QWidget(centralWidget);
+        verticalLayoutWidget->setObjectName(QStringLiteral("verticalLayoutWidget"));
+        verticalLayoutWidget->setGeometry(QRect(0, 30, 411, 211));
+        verticalLayout = new QVBoxLayout(verticalLayoutWidget);
+        verticalLayout->setSpacing(6);
+        verticalLayout->setContentsMargins(11, 11, 11, 11);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        tabWidget = new QTabWidget(verticalLayoutWidget);
+        tabWidget->setObjectName(QStringLiteral("tabWidget"));
+        tab = new QWidget();
+        tab->setObjectName(QStringLiteral("tab"));
+        plainTextEdit = new QPlainTextEdit(tab);
+        plainTextEdit->setObjectName(QStringLiteral("plainTextEdit"));
+        plainTextEdit->setGeometry(QRect(0, 0, 401, 171));
+        tabWidget->addTab(tab, QString());
+        tab_2 = new QWidget();
+        tab_2->setObjectName(QStringLiteral("tab_2"));
+        plainTextEdit_2 = new QPlainTextEdit(tab_2);
+        plainTextEdit_2->setObjectName(QStringLiteral("plainTextEdit_2"));
+        plainTextEdit_2->setGeometry(QRect(0, 0, 411, 181));
+        tabWidget->addTab(tab_2, QString());
+        tab_3 = new QWidget();
+        tab_3->setObjectName(QStringLiteral("tab_3"));
+        plainTextEdit_3 = new QPlainTextEdit(tab_3);
+        plainTextEdit_3->setObjectName(QStringLiteral("plainTextEdit_3"));
+        plainTextEdit_3->setGeometry(QRect(0, 0, 411, 181));
+        tabWidget->addTab(tab_3, QString());
+        tab_4 = new QWidget();
+        tab_4->setObjectName(QStringLiteral("tab_4"));
+        plainTextEdit_4 = new QPlainTextEdit(tab_4);
+        plainTextEdit_4->setObjectName(QStringLiteral("plainTextEdit_4"));
+        plainTextEdit_4->setGeometry(QRect(0, 0, 411, 181));
+        tabWidget->addTab(tab_4, QString());
+        tab_5 = new QWidget();
+        tab_5->setObjectName(QStringLiteral("tab_5"));
+        plainTextEdit_5 = new QPlainTextEdit(tab_5);
+        plainTextEdit_5->setObjectName(QStringLiteral("plainTextEdit_5"));
+        plainTextEdit_5->setGeometry(QRect(0, 0, 411, 181));
+        tabWidget->addTab(tab_5, QString());
+        tab_6 = new QWidget();
+        tab_6->setObjectName(QStringLiteral("tab_6"));
+        plainTextEdit_6 = new QPlainTextEdit(tab_6);
+        plainTextEdit_6->setObjectName(QStringLiteral("plainTextEdit_6"));
+        plainTextEdit_6->setGeometry(QRect(0, 0, 401, 181));
+        tabWidget->addTab(tab_6, QString());
+
+        verticalLayout->addWidget(tabWidget);
+
+        pushButton = new QPushButton(centralWidget);
+        pushButton->setObjectName(QStringLiteral("pushButton"));
+        pushButton->setGeometry(QRect(320, 0, 89, 25));
+        parameters = new QLineEdit(centralWidget);
+        parameters->setObjectName(QStringLiteral("parameters"));
+        parameters->setGeometry(QRect(0, 0, 301, 25));
+        lineEdit = new QLineEdit(centralWidget);
+        lineEdit->setObjectName(QStringLiteral("lineEdit"));
+        lineEdit->setGeometry(QRect(0, 250, 311, 25));
+        pushButton_2 = new QPushButton(centralWidget);
+        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
+        pushButton_2->setGeometry(QRect(320, 250, 89, 25));
+        MainWindow->setCentralWidget(centralWidget);
+        menuBar = new QMenuBar(MainWindow);
+        menuBar->setObjectName(QStringLiteral("menuBar"));
+        menuBar->setGeometry(QRect(0, 0, 420, 22));
+        menuChat_App = new QMenu(menuBar);
+        menuChat_App->setObjectName(QStringLiteral("menuChat_App"));
+        MainWindow->setMenuBar(menuBar);
+        mainToolBar = new QToolBar(MainWindow);
+        mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
+        MainWindow->addToolBar(Qt::TopToolBarArea, mainToolBar);
+        statusBar = new QStatusBar(MainWindow);
+        statusBar->setObjectName(QStringLiteral("statusBar"));
+        MainWindow->setStatusBar(statusBar);
+
+        menuBar->addAction(menuChat_App->menuAction());
+
+        retranslateUi(MainWindow);
+
+        tabWidget->setCurrentIndex(5);
+
+
+        QMetaObject::connectSlotsByName(MainWindow);
+    } // setupUi
+
+    void retranslateUi(QMainWindow *MainWindow)
+    {
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", Q_NULLPTR));
+        tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "Tab 1", Q_NULLPTR));
+        tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindow", "Tab 2", Q_NULLPTR));
+        tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindow", "Page", Q_NULLPTR));
+        tabWidget->setTabText(tabWidget->indexOf(tab_4), QApplication::translate("MainWindow", "Page", Q_NULLPTR));
+        tabWidget->setTabText(tabWidget->indexOf(tab_5), QApplication::translate("MainWindow", "Page", Q_NULLPTR));
+        tabWidget->setTabText(tabWidget->indexOf(tab_6), QApplication::translate("MainWindow", "Page", Q_NULLPTR));
+        pushButton->setText(QApplication::translate("MainWindow", "Connect", Q_NULLPTR));
+        parameters->setText(QApplication::translate("MainWindow", "Custom parameters here, or default.", Q_NULLPTR));
+        lineEdit->setText(QApplication::translate("MainWindow", "Message here", Q_NULLPTR));
+        pushButton_2->setText(QApplication::translate("MainWindow", "Send", Q_NULLPTR));
+        menuChat_App->setTitle(QApplication::translate("MainWindow", "Chat App", Q_NULLPTR));
+    } // retranslateUi
+
+};
+
+namespace Ui {
+    class MainWindow: public Ui_MainWindow {};
+} // namespace Ui
+
+QT_END_NAMESPACE
+
+#endif // UI_MAINWINDOW_H
