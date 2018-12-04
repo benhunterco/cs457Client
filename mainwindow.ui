@@ -123,7 +123,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="connect_Button">
     <property name="geometry">
      <rect>
       <x>320</x>
@@ -171,7 +171,7 @@
      <string>message or command</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="send_button">
     <property name="geometry">
      <rect>
       <x>320</x>
@@ -207,7 +207,7 @@
      <x>0</x>
      <y>0</y>
      <width>420</width>
-     <height>17</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuChat_App">

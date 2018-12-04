@@ -11,10 +11,10 @@ MAKEFILE      = Makefile
 ####### Compiler, tools and options
 
 CC            = gcc
-CXX           = g++
+CXX           = g++-8
 DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-CXXFLAGS      = -pipe -O2 -std=gnu++11 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
+CXXFLAGS      = -pipe -O2 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 INCPATH       = -I. -I../../../anaconda3/include/qt -I../../../anaconda3/include/qt/QtWidgets -I../../../anaconda3/include/qt/QtGui -I../../../anaconda3/include/qt/QtCore -I. -I. -I../../../anaconda3/mkspecs/linux-g++
 QMAKE         = /home/ben/anaconda3/bin/qmake
 DEL_FILE      = rm -f
@@ -38,7 +38,7 @@ DISTNAME      = Project2-client1.0.0
 DISTDIR = /home/ben/classes/cs457/clientGUI/.tmp/Project2-client1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1 -Wl,-rpath,/home/ben/anaconda3/lib
-LIBS          = $(SUBLIBS) -L/home/ben/anaconda3/lib -lQt5Widgets -lQt5Gui -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) -L/home/ben/anaconda3/lib -lQt5Widgets -lQt5Gui -lQt5Core -L/usr/include/GL -pthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed

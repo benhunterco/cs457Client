@@ -4,7 +4,7 @@ size_t cs457::client::send(std::string msg)
 {
     //this should help to clean up the commands a littl bit. Automatically appends stuff.
     //automatically prepend username, we send on every message
-    return sock->sendString(":" + username + " " + msg + "\r\n", true);
+    return sock->sendString(":" + username + " " + msg + "\r\n", false); //Breaks with qt stuff!?!?!?!
 }
 
 size_t cs457::client::registerUser()

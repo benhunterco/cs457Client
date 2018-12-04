@@ -85,6 +85,8 @@ MainWindow::MainWindow(QWidget *parent) :
             else
                 std::cerr << "file could not be opened";
         }
+        //spin up recieve thread.
+
     
 }
 
@@ -95,9 +97,9 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_pushButton_clicked()
-{
 
+void MainWindow::on_connect_Button_clicked()
+{
     //if the user enters custom connection info, get it.
     if(!MainWindow::ui->custom_address->text().isEmpty() && !MainWindow::ui->custom_port->text().isEmpty())
     {
@@ -115,8 +117,45 @@ void MainWindow::on_pushButton_clicked()
     //If not successful, toast message?
 }
 
-void MainWindow::on_pushButton_2_clicked()
+void MainWindow::on_send_button_clicked()
 {
-    //if there is text in the box, send it.
-
+    //if there is text to enter, send it. Threaded call?
+    if(!MainWindow::ui->command_input->text().isEmpty())
+    {
+        client.command(MainWindow::ui->command_input->text().toStdString());
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
