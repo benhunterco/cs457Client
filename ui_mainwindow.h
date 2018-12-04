@@ -49,7 +49,7 @@ public:
     QPlainTextEdit *plainTextEdit_6;
     QPushButton *pushButton;
     QLineEdit *custom_address;
-    QLineEdit *lineEdit;
+    QLineEdit *command_input;
     QPushButton *pushButton_2;
     QLineEdit *custom_port;
     QMenuBar *menuBar;
@@ -120,9 +120,9 @@ public:
         custom_address->setObjectName(QStringLiteral("custom_address"));
         custom_address->setGeometry(QRect(0, 0, 121, 25));
         custom_address->setAutoFillBackground(false);
-        lineEdit = new QLineEdit(centralWidget);
-        lineEdit->setObjectName(QStringLiteral("lineEdit"));
-        lineEdit->setGeometry(QRect(0, 250, 311, 25));
+        command_input = new QLineEdit(centralWidget);
+        command_input->setObjectName(QStringLiteral("command_input"));
+        command_input->setGeometry(QRect(0, 250, 311, 25));
         pushButton_2 = new QPushButton(centralWidget);
         pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
         pushButton_2->setGeometry(QRect(320, 250, 89, 25));
@@ -147,7 +147,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(3);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -165,7 +165,8 @@ public:
         pushButton->setText(QApplication::translate("MainWindow", "Connect", Q_NULLPTR));
         custom_address->setText(QString());
         custom_address->setPlaceholderText(QApplication::translate("MainWindow", "Address:127.0.0.1", Q_NULLPTR));
-        lineEdit->setText(QApplication::translate("MainWindow", "Message here", Q_NULLPTR));
+        command_input->setText(QString());
+        command_input->setPlaceholderText(QApplication::translate("MainWindow", "message or command", Q_NULLPTR));
         pushButton_2->setText(QApplication::translate("MainWindow", "Send", Q_NULLPTR));
         custom_port->setText(QString());
         custom_port->setPlaceholderText(QApplication::translate("MainWindow", "Port:2000", Q_NULLPTR));
