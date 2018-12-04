@@ -118,10 +118,12 @@ int cs457::client::command(std::string command)
 //returns int so it can handle more than just true/false.
 int cs457::client::rcvCommand()
 {
+    std::cout<<"here3"<<std::endl;
     //recieving out of the socket. 
     std::string rcvMessage;
     int length;
     tie(rcvMessage, length) = sock->recvString();
+    std::cout<<"messageReceived"<<std::endl;
 
     //if the socket is closed, return 0.
     //this handles the socket closing on us.

@@ -13,6 +13,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+     cs457::client client;
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
@@ -25,7 +26,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     //Here is the client object. It does all the keeping track of statey stuff.
-    cs457::client client;
     bool debug;
 };
 

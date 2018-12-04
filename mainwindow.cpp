@@ -85,7 +85,6 @@ MainWindow::MainWindow(QWidget *parent) :
             else
                 std::cerr << "file could not be opened";
         }
-        //spin up recieve thread.
 
     
 }
@@ -97,6 +96,18 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
+void clientReceive(cs457::client* client)
+{
+    int cont = 1;
+    while (cont)
+    {
+        std::cout << "here2" << std::endl;
+        cont = client->rcvCommand();
+    }
+    //std::cout << "OUT of rcv\n";
+
+}
 
 void MainWindow::on_connect_Button_clicked()
 {
@@ -115,6 +126,11 @@ void MainWindow::on_connect_Button_clicked()
     //Wait to verify that user is successfully registered.
     size_t success = client.registerUser();
     //If not successful, toast message?
+
+    //otherwise, spin up recieve thread
+    //spin up recieve thread.
+    std::cout << "here1" << std::endl;
+    std::thread recieveThread(clientReceive, &client);
 }
 
 void MainWindow::on_send_button_clicked()
