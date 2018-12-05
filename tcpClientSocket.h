@@ -1,42 +1,59 @@
 #pragma once
 
-#include <stdio.h>
 #include <sys/socket.h>
-#include <stdlib.h>
-#include <netinet/in.h>
-#include <string>
-#include <memory.h>
+#include <netinet/in.h> 
 #include <arpa/inet.h>
-#include <mutex>
-
+#include <strings.h>
+#include <string> 
+#include <tuple> 
+#include <unistd.h>
+#include <memory> 
+#include <mutex> 
 
 
 namespace cs457
 {
+    using namespace std; 
+    //an ideal solution is to create a socket and then either 
+    //derive or create templates that handle the differences 
+    //between a client and a socket. 
+    //there are certain aspects that a client socket does not need 
+    //such as listen and accept for example but the server does
+    class tcpClientSocket
+    {
+    public:
+        tcpClientSocket();
+        tcpClientSocket(string networkAddress, uint portNumber);
+        //int bindSocket();
+        int connectSocket();
+        int closeSocket(); 
+        std::tuple<string,ssize_t> recvString(int bufferSize=4096,bool useMutex = true);
+        ssize_t sendString(const string & data,bool useMutex = true);
+        void setAddress(string address);
+        void setPort(uint port);
+        void init();
+        void setSocketOptions();
+        
+    private: 
 
-using namespace std;
+        uint port; 
+        string address; 
+        
+     
+        //
+        int clientSocket;
+        
+        struct sockaddr_in serverAddress; 
 
-/**
- * uses a combination of stuff from the class skeleton used on the server and online documentation
- * similar except for a few variable names.
- * also adds a few debug prints
- */
-class tcpClientSocket
-{
+        //do I need this? 
+        struct in_addr addr;
 
-  public:
-    tcpClientSocket(int port, string serverAddress);
-    tuple<string,ssize_t> recvString(int bufferSize=4096,bool useMutex = true);
-    size_t sendString(const string& message, bool mutex);
-    bool debug = false;
+        //        
+        mutex sendMutex;
+        mutex recvMutex; 
+        
+    };
 
-  private:
-    struct sockaddr_in address;
-    int socketID;
-    int port;
-    string serverAddress;
-    struct sockaddr_in serv_addr;
-    mutex sendMutex;
-    mutex recieveMutex;
-};
-} 
+
+}
+

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>420</width>
-    <height>343</height>
+    <width>403</width>
+    <height>367</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,116 +18,72 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>30</y>
-      <width>411</width>
-      <height>211</height>
+      <y>0</y>
+      <width>401</width>
+      <height>251</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
-      <widget class="QTabWidget" name="tabWidget">
+      <widget class="QTabWidget" name="tabWidget_2">
        <property name="currentIndex">
-        <number>3</number>
+        <number>0</number>
        </property>
-       <widget class="QWidget" name="tab">
+       <widget class="QWidget" name="tab_3">
         <attribute name="title">
          <string>Tab 1</string>
-        </attribute>
-        <widget class="QPlainTextEdit" name="plainTextEdit">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>401</width>
-           <height>171</height>
-          </rect>
-         </property>
-        </widget>
-       </widget>
-       <widget class="QWidget" name="tab_2">
-        <attribute name="title">
-         <string>Tab 2</string>
         </attribute>
         <widget class="QPlainTextEdit" name="plainTextEdit_2">
          <property name="geometry">
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>411</width>
-           <height>181</height>
+           <width>391</width>
+           <height>161</height>
           </rect>
          </property>
         </widget>
-       </widget>
-       <widget class="QWidget" name="tab_3">
-        <attribute name="title">
-         <string>Page</string>
-        </attribute>
-        <widget class="QPlainTextEdit" name="plainTextEdit_3">
+        <widget class="QLineEdit" name="lineEdit_2">
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>0</y>
-           <width>411</width>
-           <height>181</height>
+           <y>170</y>
+           <width>291</width>
+           <height>31</height>
           </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="pushButton_2">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>170</y>
+           <width>89</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Send</string>
          </property>
         </widget>
        </widget>
        <widget class="QWidget" name="tab_4">
         <attribute name="title">
-         <string>Page</string>
+         <string>Tab 2</string>
         </attribute>
-        <widget class="QPlainTextEdit" name="plainTextEdit_4">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>411</width>
-           <height>181</height>
-          </rect>
-         </property>
-        </widget>
-       </widget>
-       <widget class="QWidget" name="tab_5">
-        <attribute name="title">
-         <string>Page</string>
-        </attribute>
-        <widget class="QPlainTextEdit" name="plainTextEdit_5">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>411</width>
-           <height>181</height>
-          </rect>
-         </property>
-        </widget>
-       </widget>
-       <widget class="QWidget" name="tab_6">
-        <attribute name="title">
-         <string>Page</string>
-        </attribute>
-        <widget class="QPlainTextEdit" name="plainTextEdit_6">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>401</width>
-           <height>181</height>
-          </rect>
-         </property>
-        </widget>
        </widget>
       </widget>
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="connect">
     <property name="geometry">
      <rect>
-      <x>320</x>
-      <y>0</y>
+      <x>310</x>
+      <y>250</y>
       <width>89</width>
       <height>25</height>
      </rect>
@@ -140,64 +96,26 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>0</y>
-      <width>121</width>
+      <y>250</y>
+      <width>141</width>
       <height>25</height>
      </rect>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
-    <property name="text">
-     <string/>
     </property>
     <property name="placeholderText">
-     <string>Address:127.0.0.1</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="command_input">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>250</y>
-      <width>311</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="placeholderText">
-     <string>message or command</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_2">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>250</y>
-      <width>89</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Send</string>
+     <string>custom address</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="custom_port">
     <property name="geometry">
      <rect>
-      <x>130</x>
-      <y>0</y>
+      <x>160</x>
+      <y>250</y>
       <width>113</width>
-      <height>21</height>
+      <height>25</height>
      </rect>
     </property>
-    <property name="text">
-     <string/>
-    </property>
     <property name="placeholderText">
-     <string>Port:2000</string>
+     <string>custom port</string>
     </property>
    </widget>
   </widget>
@@ -206,16 +124,10 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>420</width>
-     <height>17</height>
+     <width>403</width>
+     <height>22</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuChat_App">
-    <property name="title">
-     <string>Chat App</string>
-    </property>
-   </widget>
-   <addaction name="menuChat_App"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">

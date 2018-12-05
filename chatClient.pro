@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2018-12-02T17:11:38
+# Project created by QtCreator 2018-11-24T23:56:12
 #
 #-------------------------------------------------
 
@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = Project2-client
+TARGET = chatclient.out
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -22,23 +22,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-CONFIG += c++14
+CONFIG += c++18
 
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
     chatClient.cpp \
-    client.cpp \
-    Parsing.cpp \
-    tcpClientSocket.cpp \
-    tcpUserSocket.cpp
+    tcpClientSocket.cpp
 
 HEADERS += \
         mainwindow.h \
-    client.h \
-    Parsing.h \
-    tcpClientSocket.h \
-    tcpUserSocket.h
+    tcpClientSocket.h
 
 FORMS += \
         mainwindow.ui
@@ -47,6 +41,3 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
-
-DISTFILES += \
-    chatClient.out
