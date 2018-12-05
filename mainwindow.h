@@ -3,6 +3,7 @@
 
 #include "client.h"
 #include <QMainWindow>
+#include <thread>
 
 namespace Ui {
 class MainWindow;
@@ -14,6 +15,8 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
+    void clientReceive();
+    std::unique_ptr<std::thread> receiveThread;
     ~MainWindow();
 
 private slots:

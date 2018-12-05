@@ -14,7 +14,7 @@ CC            = gcc
 CXX           = g++
 DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-CXXFLAGS      = -pipe -O2 -std=gnu++11 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
+CXXFLAGS      = -pipe -O2 -std=gnu++1y -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 INCPATH       = -I. -I../../../anaconda3/include/qt -I../../../anaconda3/include/qt/QtWidgets -I../../../anaconda3/include/qt/QtGui -I../../../anaconda3/include/qt/QtCore -I. -I. -I../../../anaconda3/mkspecs/linux-g++
 QMAKE         = /home/ben/anaconda3/bin/qmake
 DEL_FILE      = rm -f
@@ -38,7 +38,7 @@ DISTNAME      = Project2-client1.0.0
 DISTDIR = /home/ben/classes/cs457/clientGUI/.tmp/Project2-client1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1 -Wl,-rpath,/home/ben/anaconda3/lib
-LIBS          = $(SUBLIBS) -L/home/ben/anaconda3/lib -lQt5Widgets -lQt5Gui -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) -L/home/ben/anaconda3/lib -lQt5Widgets -lQt5Gui -lQt5Core -L/usr/include/GL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -224,6 +224,7 @@ DIST          = chatClient.out \
 		../../../anaconda3/mkspecs/features/qt_config.prf \
 		../../../anaconda3/mkspecs/linux-g++/qmake.conf \
 		../../../anaconda3/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../anaconda3/mkspecs/features/exclusive_builds.prf \
 		../../../anaconda3/mkspecs/features/toolchain.prf \
 		../../../anaconda3/mkspecs/features/default_pre.prf \
@@ -422,6 +423,7 @@ Makefile: Project2-client.pro ../../../anaconda3/mkspecs/linux-g++/qmake.conf ..
 		../../../anaconda3/mkspecs/features/qt_config.prf \
 		../../../anaconda3/mkspecs/linux-g++/qmake.conf \
 		../../../anaconda3/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../anaconda3/mkspecs/features/exclusive_builds.prf \
 		../../../anaconda3/mkspecs/features/toolchain.prf \
 		../../../anaconda3/mkspecs/features/default_pre.prf \
@@ -603,6 +605,7 @@ Makefile: Project2-client.pro ../../../anaconda3/mkspecs/linux-g++/qmake.conf ..
 ../../../anaconda3/mkspecs/features/qt_config.prf:
 ../../../anaconda3/mkspecs/linux-g++/qmake.conf:
 ../../../anaconda3/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../anaconda3/mkspecs/features/exclusive_builds.prf:
 ../../../anaconda3/mkspecs/features/toolchain.prf:
 ../../../anaconda3/mkspecs/features/default_pre.prf:
@@ -672,7 +675,7 @@ compiler_moc_predefs_make_all: moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) moc_predefs.h
 moc_predefs.h: ../../../anaconda3/mkspecs/features/data/dummy.cpp
-	g++ -pipe -O2 -std=gnu++11 -Wall -W -dM -E -o moc_predefs.h ../../../anaconda3/mkspecs/features/data/dummy.cpp
+	g++ -pipe -O2 -std=gnu++1y -Wall -W -dM -E -o moc_predefs.h ../../../anaconda3/mkspecs/features/data/dummy.cpp
 
 compiler_moc_header_make_all: moc_mainwindow.cpp
 compiler_moc_header_clean:
@@ -1031,70 +1034,7 @@ mainwindow.o: mainwindow.cpp tcpUserSocket.h \
 		../../../anaconda3/include/qt/QtGui/qtouchdevice.h \
 		../../../anaconda3/include/qt/QtWidgets/qtabwidget.h \
 		../../../anaconda3/include/qt/QtGui/qicon.h \
-		ui_mainwindow.h \
-		../../../anaconda3/include/qt/QtCore/QVariant \
-		../../../anaconda3/include/qt/QtWidgets/QAction \
-		../../../anaconda3/include/qt/QtWidgets/qaction.h \
-		../../../anaconda3/include/qt/QtWidgets/qactiongroup.h \
-		../../../anaconda3/include/qt/QtWidgets/QApplication \
-		../../../anaconda3/include/qt/QtWidgets/qapplication.h \
-		../../../anaconda3/include/qt/QtCore/qcoreapplication.h \
-		../../../anaconda3/include/qt/QtCore/qeventloop.h \
-		../../../anaconda3/include/qt/QtWidgets/qdesktopwidget.h \
-		../../../anaconda3/include/qt/QtGui/qguiapplication.h \
-		../../../anaconda3/include/qt/QtGui/qinputmethod.h \
-		../../../anaconda3/include/qt/QtWidgets/QButtonGroup \
-		../../../anaconda3/include/qt/QtWidgets/qbuttongroup.h \
-		../../../anaconda3/include/qt/QtWidgets/QHeaderView \
-		../../../anaconda3/include/qt/QtWidgets/qheaderview.h \
-		../../../anaconda3/include/qt/QtWidgets/qabstractitemview.h \
-		../../../anaconda3/include/qt/QtWidgets/qabstractscrollarea.h \
-		../../../anaconda3/include/qt/QtWidgets/qframe.h \
-		../../../anaconda3/include/qt/QtCore/qabstractitemmodel.h \
-		../../../anaconda3/include/qt/QtCore/qitemselectionmodel.h \
-		../../../anaconda3/include/qt/QtWidgets/qabstractitemdelegate.h \
-		../../../anaconda3/include/qt/QtWidgets/qstyleoption.h \
-		../../../anaconda3/include/qt/QtWidgets/qabstractspinbox.h \
-		../../../anaconda3/include/qt/QtGui/qvalidator.h \
-		../../../anaconda3/include/qt/QtCore/qregularexpression.h \
-		../../../anaconda3/include/qt/QtWidgets/qslider.h \
-		../../../anaconda3/include/qt/QtWidgets/qabstractslider.h \
-		../../../anaconda3/include/qt/QtWidgets/qstyle.h \
-		../../../anaconda3/include/qt/QtWidgets/qtabbar.h \
-		../../../anaconda3/include/qt/QtWidgets/qrubberband.h \
-		../../../anaconda3/include/qt/QtWidgets/QLineEdit \
-		../../../anaconda3/include/qt/QtWidgets/qlineedit.h \
-		../../../anaconda3/include/qt/QtGui/qtextcursor.h \
-		../../../anaconda3/include/qt/QtGui/qtextformat.h \
-		../../../anaconda3/include/qt/QtGui/qpen.h \
-		../../../anaconda3/include/qt/QtGui/qtextoption.h \
-		../../../anaconda3/include/qt/QtWidgets/QMenu \
-		../../../anaconda3/include/qt/QtWidgets/qmenu.h \
-		../../../anaconda3/include/qt/QtWidgets/QMenuBar \
-		../../../anaconda3/include/qt/QtWidgets/qmenubar.h \
-		../../../anaconda3/include/qt/QtWidgets/QPlainTextEdit \
-		../../../anaconda3/include/qt/QtWidgets/qplaintextedit.h \
-		../../../anaconda3/include/qt/QtWidgets/qtextedit.h \
-		../../../anaconda3/include/qt/QtGui/qtextdocument.h \
-		../../../anaconda3/include/qt/QtGui/qabstracttextdocumentlayout.h \
-		../../../anaconda3/include/qt/QtGui/qtextlayout.h \
-		../../../anaconda3/include/qt/QtGui/qglyphrun.h \
-		../../../anaconda3/include/qt/QtGui/qrawfont.h \
-		../../../anaconda3/include/qt/QtGui/qfontdatabase.h \
-		../../../anaconda3/include/qt/QtWidgets/QPushButton \
-		../../../anaconda3/include/qt/QtWidgets/qpushbutton.h \
-		../../../anaconda3/include/qt/QtWidgets/qabstractbutton.h \
-		../../../anaconda3/include/qt/QtWidgets/QStatusBar \
-		../../../anaconda3/include/qt/QtWidgets/qstatusbar.h \
-		../../../anaconda3/include/qt/QtWidgets/QTabWidget \
-		../../../anaconda3/include/qt/QtWidgets/QToolBar \
-		../../../anaconda3/include/qt/QtWidgets/qtoolbar.h \
-		../../../anaconda3/include/qt/QtWidgets/QVBoxLayout \
-		../../../anaconda3/include/qt/QtWidgets/qboxlayout.h \
-		../../../anaconda3/include/qt/QtWidgets/qlayout.h \
-		../../../anaconda3/include/qt/QtWidgets/qlayoutitem.h \
-		../../../anaconda3/include/qt/QtWidgets/qgridlayout.h \
-		../../../anaconda3/include/qt/QtWidgets/QWidget
+		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o mainwindow.cpp
 
 chatClient.o: chatClient.cpp tcpUserSocket.h \

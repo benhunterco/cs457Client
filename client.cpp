@@ -4,7 +4,7 @@ size_t cs457::client::send(std::string msg)
 {
     //this should help to clean up the commands a littl bit. Automatically appends stuff.
     //automatically prepend username, we send on every message
-    return sock->sendString(":" + username + " " + msg + "\r\n", true);
+    return sock->sendString(":" + username + " " + msg + "\r\n", false);
 }
 
 size_t cs457::client::registerUser()
@@ -118,9 +118,11 @@ int cs457::client::command(std::string command)
 //returns int so it can handle more than just true/false.
 int cs457::client::rcvCommand()
 {
+
     //recieving out of the socket. 
     std::string rcvMessage;
     int length;
+    std::cout << "About to call receive!" << std::endl;
     tie(rcvMessage, length) = sock->recvString();
 
     //if the socket is closed, return 0.
@@ -128,9 +130,14 @@ int cs457::client::rcvCommand()
     if (length <= 0)
     {
         std::cout << "\n[CLIENT] Connection to remote host lost. Press Enter to continue." << std::endl;
-        return 0;
+        return 1;
     }
-    //otherwise there was  something in the socket
+    else
+    {
+        std::cout << "\n Recieved " + rcvMessage + " from server" << std::endl;
+    }
+
+    /*//otherwise there was  something in the socket
     else
     {
         //parse it.
@@ -285,5 +292,9 @@ int cs457::client::rcvCommand()
             std::cout << "\n[CLIENT] Recieved: " << rcvMessage << "[CLIENT] Input Message or Command: " << std::flush;
         }
         return 1;
-    }
+        */
+        std::cout << "Thread running" << std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+        return 1;
 }
+

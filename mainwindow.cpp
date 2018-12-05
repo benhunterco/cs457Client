@@ -16,6 +16,15 @@
 
 
 
+void MainWindow::clientReceive()
+{
+    int cont = 1;
+    while (cont)
+    {
+        cont = client.rcvCommand();
+    }
+    //std::cout << "OUT of rcv\n";
+}
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -85,14 +94,14 @@ MainWindow::MainWindow(QWidget *parent) :
             else
                 std::cerr << "file could not be opened";
         }
-    
-}
 
+}
 
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    receiveThread->join();
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -112,11 +121,25 @@ void MainWindow::on_pushButton_clicked()
     //register the user. This call is not threaded.
     //Wait to verify that user is successfully registered.
     size_t success = client.registerUser();
-    //If not successful, toast message?
+    if(success)
+    {
+        //If not successful, toast message?
+        //std::unique_ptr<std::thread> mypty = make_unique<std::thread>(&MainWindow::clientReceive);
+        //std::thread* myT = new std::thread(&MainWindow::clientReceive);
+        MainWindow::receiveThread = std::make_unique<std::thread>(&MainWindow::clientReceive, this);
+    }
+
+
 }
 
 void MainWindow::on_pushButton_2_clicked()
 {
     //if there is text in the box, send it.
+    if(!MainWindow::ui->command_input->text().isEmpty())
+    {
+        std::string message = MainWindow::ui->command_input->text().toStdString();
+        std::cout << "sending "+ message << std::endl;
+        client.send(message);
+    }
 
 }
