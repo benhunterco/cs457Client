@@ -2,5 +2,6 @@
 chatClient.pro.user
 chatclient
 chatClient.pro.user.*
+chatclient.out
 *.o
 *.autosave
