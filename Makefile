@@ -53,11 +53,15 @@ OBJECTS_DIR   = ./
 SOURCES       = main.cpp \
 		mainwindow.cpp \
 		chatClient.cpp \
-		tcpClientSocket.cpp moc_mainwindow.cpp
+		tcpClientSocket.cpp \
+		Parsing.cpp \
+		client.cpp moc_mainwindow.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		chatClient.o \
 		tcpClientSocket.o \
+		Parsing.o \
+		client.o \
 		moc_mainwindow.o
 DIST          = ../../../anaconda3/mkspecs/features/spec_pre.prf \
 		../../../anaconda3/mkspecs/common/unix.conf \
@@ -238,10 +242,14 @@ DIST          = ../../../anaconda3/mkspecs/features/spec_pre.prf \
 		../../../anaconda3/mkspecs/features/lex.prf \
 		chatClient.pro mainwindow.h \
 		tcpClientSocket.h \
-		customtabwidget.h main.cpp \
+		customtabwidget.h \
+		client.h \
+		Parsing.h main.cpp \
 		mainwindow.cpp \
 		chatClient.cpp \
-		tcpClientSocket.cpp
+		tcpClientSocket.cpp \
+		Parsing.cpp \
+		client.cpp
 QMAKE_TARGET  = chatclient.out
 DESTDIR       = 
 TARGET        = chatclient.out
@@ -631,8 +639,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../anaconda3/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents mainwindow.h tcpClientSocket.h customtabwidget.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp mainwindow.cpp chatClient.cpp tcpClientSocket.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents mainwindow.h tcpClientSocket.h customtabwidget.h client.h Parsing.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp mainwindow.cpp chatClient.cpp tcpClientSocket.cpp Parsing.cpp client.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents mainwindow.ui $(DISTDIR)/
 
 
@@ -772,6 +780,8 @@ moc_mainwindow.cpp: ../../../anaconda3/include/qt/QtWidgets/QMainWindow \
 		../../../anaconda3/include/qt/QtWidgets/qtabwidget.h \
 		../../../anaconda3/include/qt/QtGui/qicon.h \
 		tcpClientSocket.h \
+		client.h \
+		Parsing.h \
 		mainwindow.h \
 		moc_predefs.h \
 		../../../anaconda3/bin/moc
@@ -901,6 +911,8 @@ main.o: main.cpp mainwindow.h \
 		../../../anaconda3/include/qt/QtWidgets/qtabwidget.h \
 		../../../anaconda3/include/qt/QtGui/qicon.h \
 		tcpClientSocket.h \
+		client.h \
+		Parsing.h \
 		../../../anaconda3/include/qt/QtWidgets/QApplication \
 		../../../anaconda3/include/qt/QtWidgets/qapplication.h \
 		../../../anaconda3/include/qt/QtCore/qcoreapplication.h \
@@ -1015,6 +1027,8 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../../anaconda3/include/qt/QtWidgets/qtabwidget.h \
 		../../../anaconda3/include/qt/QtGui/qicon.h \
 		tcpClientSocket.h \
+		client.h \
+		Parsing.h \
 		ui_mainwindow.h \
 		../../../anaconda3/include/qt/QtCore/QVariant \
 		../../../anaconda3/include/qt/QtWidgets/QAction \
@@ -1085,6 +1099,14 @@ chatClient.o: chatClient.cpp tcpClientSocket.h
 
 tcpClientSocket.o: tcpClientSocket.cpp tcpClientSocket.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tcpClientSocket.o tcpClientSocket.cpp
+
+Parsing.o: Parsing.cpp Parsing.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Parsing.o Parsing.cpp
+
+client.o: client.cpp client.h \
+		tcpClientSocket.h \
+		Parsing.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o client.o client.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

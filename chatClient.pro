@@ -28,12 +28,16 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     chatClient.cpp \
-    tcpClientSocket.cpp
+    tcpClientSocket.cpp \
+    Parsing.cpp \
+    client.cpp
 
 HEADERS += \
         mainwindow.h \
     tcpClientSocket.h \
-    customtabwidget.h
+    customtabwidget.h \
+    client.h \
+    Parsing.h
 
 FORMS += \
         mainwindow.ui

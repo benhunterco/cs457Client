@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "tcpClientSocket.h"
+#include "client.h"
 #include <iostream>
 #include <string>
 #include <thread>
@@ -38,6 +39,7 @@ private:
     void test();
     bool continueReceiveing;
     void addNewChannel(string channelName);
+    cs457::client client;
 
 };
 
