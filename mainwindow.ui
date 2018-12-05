@@ -26,8 +26,14 @@
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
       <widget class="QTabWidget" name="tabWidget">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
+       </property>
+       <property name="tabsClosable">
+        <bool>false</bool>
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">

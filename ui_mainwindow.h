@@ -64,6 +64,8 @@ public:
         verticalLayout_2->setContentsMargins(0, 0, 0, 0);
         tabWidget = new QTabWidget(verticalLayoutWidget);
         tabWidget->setObjectName(QStringLiteral("tabWidget"));
+        tabWidget->setEnabled(true);
+        tabWidget->setTabsClosable(false);
         tab = new QWidget();
         tab->setObjectName(QStringLiteral("tab"));
         plainTextEdit = new QPlainTextEdit(tab);

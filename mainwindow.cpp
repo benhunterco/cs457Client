@@ -18,6 +18,9 @@ MainWindow::MainWindow(QWidget *parent, string serverIP, uint port) :
     clientSocket.setPort(port);
     ui->plainTextEdit->moveCursor (QTextCursor::End);
 
+    //delete second tab. Couldn't remove it in the form...
+    ui->tabWidget->removeTab(1);
+
 }
 
 MainWindow::~MainWindow()
@@ -104,6 +107,7 @@ void MainWindow::addNewChannel(string newChannelName)
     auto newOutputPage = new QPlainTextEdit(newTab);
     newOutputPage->setGeometry(QRect(0, 0, 531, 231));
     ui->tabWidget->addTab(newTab, newChannelQ);
+    ui->tabWidget->setTabsClosable(true);
 
 }
 

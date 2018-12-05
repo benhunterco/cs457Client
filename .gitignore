@@ -3,3 +3,4 @@ chatClient.pro.user
 chatclient
 chatClient.pro.user.*
 *.o
+*.autosave
