@@ -91,8 +91,7 @@ void MainWindow::on_connect_clicked()
     {
         //register the user
         //string = get registration?
-        string registration = ":bobby PASS @\r\n";
-        client.sock->sendString(registration, false);
+        client.registerUser();
     }
 
     continueReceiveing = true;

@@ -30,6 +30,7 @@ public:
     //new and experimental
     tcpClientSocket* sock;
     ssize_t send(std::string msg);
+    ssize_t registerUser();
 
     bool connected = false;
 };
