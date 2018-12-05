@@ -6,6 +6,7 @@
 #include <thread>
 #include <chrono>
 
+
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent, string serverIP, uint port) :
@@ -15,8 +16,10 @@ MainWindow::MainWindow(QWidget *parent, string serverIP, uint port) :
     ui->setupUi(this);
     clientSocket.setAddress(serverIP);
     clientSocket.setPort(port);
-    ui->plainTextEdit_2->moveCursor (QTextCursor::End);
+    ui->plainTextEdit->moveCursor (QTextCursor::End);
 
+    //delete second tab. Couldn't remove it in the form...
+    ui->tabWidget->removeTab(1);
 
 }
 
@@ -35,9 +38,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::displayMessage(string msg)
 {
-    ui->plainTextEdit_2->moveCursor (QTextCursor::End);
+    ui->plainTextEdit->moveCursor (QTextCursor::End);
     string displaymsg = "server: " + msg + "\n";
-    ui->plainTextEdit_2->insertPlainText (QString::fromStdString(displaymsg));
+    ui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
 
 }
 
@@ -56,12 +59,12 @@ void MainWindow::test()
     }
 }
 
-void MainWindow::on_pushButton_2_clicked()
+void MainWindow::on_send_clicked()
 {
-    string sendmsg = ui->lineEdit_2->text().toStdString();
-    ui->plainTextEdit_2->moveCursor (QTextCursor::End);
+    string sendmsg = ui->messageInput->text().toStdString();
+    ui->plainTextEdit->moveCursor (QTextCursor::End);
     string displaymsg = "user: " + sendmsg + "\n";
-    ui->plainTextEdit_2->insertPlainText (QString::fromStdString(displaymsg));
+    ui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
     clientSocket.sendString(sendmsg + "\r\n",false);
     //receive();
 }
@@ -91,3 +94,60 @@ void MainWindow::on_connect_clicked()
     continueReceiveing = true;
     rcvThread = make_unique<std::thread>(&MainWindow::test, this);
 }
+
+void MainWindow::addNewChannel(string newChannelName)
+{
+    //go to "convenient" Qstring
+    QString newChannelQ = QString::fromStdString(newChannelName);
+    //create the new tab object
+    QWidget* newTab = new QWidget(ui->verticalLayoutWidget);
+    //call it newchannelname
+    newTab->setObjectName(newChannelQ);
+    newTab->setWindowTitle(newChannelQ);
+    auto newOutputPage = new QPlainTextEdit(newTab);
+    newOutputPage->setGeometry(QRect(0, 0, 531, 231));
+    ui->tabWidget->addTab(newTab, newChannelQ);
+    ui->tabWidget->setTabsClosable(true);
+
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    addNewChannel("#Channel");
+}
+
+//TODO:
+/*https://stackoverflow.com/questions/35597431/closable-qtabwidget-tabs-but-not-all-of-them
+void MainWindow::slotCloseTab(int index)
+{
+    delete _pTabWidget->widget(index);
+}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -24,9 +24,11 @@ public:
 //    cs457::tcpClientSocket clientSocket;
 
 private slots:
-    void on_pushButton_2_clicked();
+    void on_send_clicked();
 
     void on_connect_clicked();
+
+    void on_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -35,6 +37,7 @@ private:
     unique_ptr<std::thread> rcvThread;
     void test();
     bool continueReceiveing;
+    void addNewChannel(string channelName);
 
 };
 
