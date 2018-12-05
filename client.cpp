@@ -123,7 +123,7 @@ int cs457::client::rcvCommand()
     std::string rcvMessage;
     int length;
     std::cout << "About to call receive!" << std::endl;
-    tie(rcvMessage, length) = sock->recvString(4069, false);
+    tie(rcvMessage, length) = sock->recvString();
 
     //if the socket is closed, return 0.
     //this handles the socket closing on us.
