@@ -116,7 +116,12 @@ void MainWindow::on_pushButton_clicked()
     addNewChannel("#Channel");
 }
 
-
+//TODO:
+/*https://stackoverflow.com/questions/35597431/closable-qtabwidget-tabs-but-not-all-of-them
+void MainWindow::slotCloseTab(int index)
+{
+    delete _pTabWidget->widget(index);
+}*/
 
 
 
