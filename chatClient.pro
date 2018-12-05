@@ -32,7 +32,8 @@ SOURCES += \
 
 HEADERS += \
         mainwindow.h \
-    tcpClientSocket.h
+    tcpClientSocket.h \
+    customtabwidget.h
 
 FORMS += \
         mainwindow.ui

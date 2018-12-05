@@ -237,7 +237,8 @@ DIST          = ../../../anaconda3/mkspecs/features/spec_pre.prf \
 		../../../anaconda3/mkspecs/features/yacc.prf \
 		../../../anaconda3/mkspecs/features/lex.prf \
 		chatClient.pro mainwindow.h \
-		tcpClientSocket.h main.cpp \
+		tcpClientSocket.h \
+		customtabwidget.h main.cpp \
 		mainwindow.cpp \
 		chatClient.cpp \
 		tcpClientSocket.cpp
@@ -630,7 +631,7 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../anaconda3/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents mainwindow.h tcpClientSocket.h $(DISTDIR)/
+	$(COPY_FILE) --parents mainwindow.h tcpClientSocket.h customtabwidget.h $(DISTDIR)/
 	$(COPY_FILE) --parents main.cpp mainwindow.cpp chatClient.cpp tcpClientSocket.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents mainwindow.ui $(DISTDIR)/
 
