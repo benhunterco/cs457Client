@@ -39,9 +39,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::displayMessage(string msg)
 {
+    cout << "\nAttempting to display message" << endl;
     ui->plainTextEdit->moveCursor (QTextCursor::End);
     string displaymsg = "server: " + msg + "\n";
     ui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
+    cout << "\nMessage displayed correctly" << endl;
 
 }
 
