@@ -74,7 +74,14 @@ void MainWindow::on_send_clicked()
     //clientSocket.sendString(sendmsg + "\r\n",false);
     string sendInfo = client.command(sendmsg);
     //for now, just display it. Could use it for status?
+    if(sendInfo == "QUIT")
+    {
+        continueReceiveing = false;
+    }
+    else
+    {
     ui->plainTextEdit->insertPlainText (QString::fromStdString(sendInfo));
+    }
     //receive();
 }
 
