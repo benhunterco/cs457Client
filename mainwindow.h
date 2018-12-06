@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "tcpClientSocket.h"
+#include "QtConcurrent/qtconcurrentrun.h"
 #include "client.h"
 #include <iostream>
 #include <string>
@@ -36,6 +37,7 @@ private:
     cs457::tcpClientSocket clientSocket;
     void displayMessage(string message, Ui::MainWindow *myui);
     unique_ptr<std::thread> rcvThread;
+    QFuture<void> future;
     void test(Ui::MainWindow *myui);
     bool continueReceiveing;
     void addNewChannel(string channelName);

@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "tcpClientSocket.h"
-#include "QtConcurrent/qtconcurrentrun.h"
 #include <iostream>
 #include <string>
 #include <thread>
@@ -27,13 +26,11 @@ MainWindow::MainWindow(QWidget *parent, string serverIP, uint port) :
 
 MainWindow::~MainWindow()
 {
-    string msgExit("EXIT");
-    clientSocket.sendString(msgExit,false);
-    clientSocket.closeSocket();
     continueReceiveing = false;
-    if(rcvThread && rcvThread->joinable())
+    client.command("/QUIT");
+    if(future.isStarted())
     {
-        rcvThread->join();
+        future.waitForFinished();
     }
     delete ui;
 }
@@ -112,7 +109,7 @@ void MainWindow::on_connect_clicked()
     continueReceiveing = true;
     //rcvThread = make_unique<std::thread>(&MainWindow::test, ui);
     //QFuture<void> future = QtConcurrent::run(aFunction)
-    QFuture<void> future = QtConcurrent::run(this, &MainWindow::test, ui);
+    future = QtConcurrent::run(this, &MainWindow::test, ui);
 
 }
 
