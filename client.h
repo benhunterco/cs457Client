@@ -32,7 +32,13 @@ public:
     ssize_t send(std::string msg);
     ssize_t registerUser();
 
+    //interprets the entered command by the
+    string command(std::string msg);
+
     bool connected = false;
+private:
+    //you actually need to do more than just this.
+    bool sendDirect = false;
 };
 }
 

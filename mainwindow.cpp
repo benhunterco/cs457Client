@@ -67,7 +67,7 @@ void MainWindow::on_send_clicked()
     string displaymsg = "user: " + sendmsg + "\n";
     ui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
     //clientSocket.sendString(sendmsg + "\r\n",false);
-    client.send(sendmsg);
+    client.command(sendmsg);
     //receive();
 }
 
