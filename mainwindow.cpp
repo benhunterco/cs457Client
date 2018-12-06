@@ -54,10 +54,14 @@ void MainWindow::test(Ui::MainWindow *myui)
         ssize_t v;
         tie(rcvmsg,v) =  clientSocket.recvString(4096,false);
         if(v > 0)
+        {
              displayMessage(rcvmsg, myui);
+        }
         else
+        {
             cout << "Read from empty socket";
-
+            continueReceiveing = false;
+        }
     }
 }
 

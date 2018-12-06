@@ -18,6 +18,12 @@ std::string cs457::client::command(std::string command)
            {
                retStr += "A helpful message";
            }
+           else if (msg.command == "QUIT")
+           {
+               send(command);
+               sock->closeSocket();
+               retStr = "QUIT";
+           }
            else
            {
                send(command);
