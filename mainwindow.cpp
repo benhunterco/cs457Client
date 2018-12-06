@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "tcpClientSocket.h"
+#include "QtConcurrent/qtconcurrentrun.h"
 #include <iostream>
 #include <string>
 #include <thread>
@@ -14,8 +15,9 @@ MainWindow::MainWindow(QWidget *parent, string serverIP, uint port) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    clientSocket.setAddress(serverIP);
-    clientSocket.setPort(port);
+    clientSocket.setAddress(client.hostname);
+    clientSocket.setPort(client.serverport);
+    client.sock = &clientSocket;
     ui->plainTextEdit->moveCursor (QTextCursor::End);
 
     //delete second tab. Couldn't remove it in the form...
@@ -36,15 +38,15 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::displayMessage(string msg)
+void MainWindow::displayMessage(string msg, Ui::MainWindow *myui)
 {
-    ui->plainTextEdit->moveCursor (QTextCursor::End);
+    //ui->plainTextEdit->moveCursor (QTextCursor::End);
     string displaymsg = "server: " + msg + "\n";
-    ui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
+    myui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
 
 }
 
-void MainWindow::test()
+void MainWindow::test(Ui::MainWindow *myui)
 {
     while(continueReceiveing){
         cout << "Attempting to recv from socket." << endl;
@@ -52,7 +54,7 @@ void MainWindow::test()
         ssize_t v;
         tie(rcvmsg,v) =  clientSocket.recvString(4096,false);
         if(v > 0)
-             displayMessage(rcvmsg);
+             displayMessage(rcvmsg, myui);
         else
             cout << "Read from empty socket";
 
@@ -65,7 +67,8 @@ void MainWindow::on_send_clicked()
     ui->plainTextEdit->moveCursor (QTextCursor::End);
     string displaymsg = "user: " + sendmsg + "\n";
     ui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
-    clientSocket.sendString(sendmsg + "\r\n",false);
+    //clientSocket.sendString(sendmsg + "\r\n",false);
+    client.send(sendmsg);
     //receive();
 }
 
@@ -73,11 +76,13 @@ void MainWindow::on_connect_clicked()
 {
     if(!ui->custom_address->text().isEmpty() && !ui->custom_port->text().isEmpty())
     {
-        clientSocket.setAddress(ui->custom_address->text().toStdString());
-        clientSocket.setPort(stoul(ui->custom_port->text().toStdString()));
+        client.hostname = ui->custom_address->text().toStdString();
+        client.serverport = stoul(ui->custom_port->text().toStdString());
+        client.sock->setAddress(client.hostname);
+        client.sock->setPort(client.serverport);
     }
-    clientSocket.init();
-    clientSocket.setSocketOptions();
+    client.sock->init();
+    client.sock->setSocketOptions();
     int val = clientSocket.connectSocket();
     if (val > 0)
     {
@@ -88,11 +93,14 @@ void MainWindow::on_connect_clicked()
         //register the user
         //string = get registration?
         string registration = ":bobby PASS @\r\n";
-        clientSocket.sendString(registration, false);
+        client.sock->sendString(registration, false);
     }
 
     continueReceiveing = true;
-    rcvThread = make_unique<std::thread>(&MainWindow::test, this);
+    //rcvThread = make_unique<std::thread>(&MainWindow::test, ui);
+    //QFuture<void> future = QtConcurrent::run(aFunction)
+    QFuture<void> future = QtConcurrent::run(this, &MainWindow::test, ui);
+
 }
 
 void MainWindow::addNewChannel(string newChannelName)
