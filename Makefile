@@ -35,10 +35,10 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = chatclient.out1.0.0
-DISTDIR = /home/ben/VSCodeProjects/Sockets/Project2-client/.tmp/chatclient.out1.0.0
+DISTDIR = /home/ben/classes/cs457/clientGUI/.tmp/chatclient.out1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1 -Wl,-rpath,/home/ben/anaconda3/lib
-LIBS          = $(SUBLIBS) -L/home/ben/anaconda3/lib -lQt5Widgets -lQt5Gui -lQt5Core -L/usr/include/GL -lpthread 
+LIBS          = $(SUBLIBS) -L/home/ben/anaconda3/lib -lQt5Widgets -lQt5Gui -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -785,7 +785,7 @@ moc_mainwindow.cpp: ../../../anaconda3/include/qt/QtWidgets/QMainWindow \
 		mainwindow.h \
 		moc_predefs.h \
 		../../../anaconda3/bin/moc
-	/home/ben/anaconda3/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/ben/anaconda3/mkspecs/linux-g++ -I/home/ben/VSCodeProjects/Sockets/Project2-client -I/home/ben/anaconda3/include/qt -I/home/ben/anaconda3/include/qt/QtWidgets -I/home/ben/anaconda3/include/qt/QtGui -I/home/ben/anaconda3/include/qt/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include mainwindow.h -o moc_mainwindow.cpp
+	/home/ben/anaconda3/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/ben/anaconda3/mkspecs/linux-g++ -I/home/ben/classes/cs457/clientGUI -I/home/ben/anaconda3/include/qt -I/home/ben/anaconda3/include/qt/QtWidgets -I/home/ben/anaconda3/include/qt/QtGui -I/home/ben/anaconda3/include/qt/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include mainwindow.h -o moc_mainwindow.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:

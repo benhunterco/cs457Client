@@ -34,9 +34,9 @@ private slots:
 private:
     Ui::MainWindow *ui;
     cs457::tcpClientSocket clientSocket;
-    void displayMessage(string message);
+    void displayMessage(string message, Ui::MainWindow *myui);
     unique_ptr<std::thread> rcvThread;
-    void test();
+    void test(Ui::MainWindow *myui);
     bool continueReceiveing;
     void addNewChannel(string channelName);
     cs457::client client;

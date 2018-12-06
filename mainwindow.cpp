@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "tcpClientSocket.h"
+#include "QtConcurrent/qtconcurrentrun.h"
 #include <iostream>
 #include <string>
 #include <thread>
@@ -37,15 +38,15 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::displayMessage(string msg)
+void MainWindow::displayMessage(string msg, Ui::MainWindow *myui)
 {
-    ui->plainTextEdit->moveCursor (QTextCursor::End);
+    //ui->plainTextEdit->moveCursor (QTextCursor::End);
     string displaymsg = "server: " + msg + "\n";
-    ui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
+    myui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
 
 }
 
-void MainWindow::test()
+void MainWindow::test(Ui::MainWindow *myui)
 {
     while(continueReceiveing){
         cout << "Attempting to recv from socket." << endl;
@@ -53,7 +54,7 @@ void MainWindow::test()
         ssize_t v;
         tie(rcvmsg,v) =  clientSocket.recvString(4096,false);
         if(v > 0)
-             displayMessage(rcvmsg);
+             displayMessage(rcvmsg, myui);
         else
             cout << "Read from empty socket";
 
@@ -96,7 +97,9 @@ void MainWindow::on_connect_clicked()
     }
 
     continueReceiveing = true;
-    rcvThread = make_unique<std::thread>(&MainWindow::test, this);
+    //rcvThread = make_unique<std::thread>(&MainWindow::test, ui);
+    //QFuture<void> future = QtConcurrent::run(aFunction)
+    QFuture<void> future = QtConcurrent::run(this, &MainWindow::test, ui);
 
 }
 
