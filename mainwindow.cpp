@@ -68,7 +68,9 @@ void MainWindow::on_send_clicked()
     string displaymsg = "user: " + sendmsg + "\n";
     ui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
     //clientSocket.sendString(sendmsg + "\r\n",false);
-    client.send(sendmsg);
+    string sendInfo = client.command(sendmsg);
+    //for now, just display it. Could use it for status?
+    ui->plainTextEdit->insertPlainText (QString::fromStdString(sendInfo));
     //receive();
 }
 

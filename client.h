@@ -31,6 +31,8 @@ public:
     tcpClientSocket* sock;
     ssize_t send(std::string msg);
 
+    string command(std::string command);
+
     bool connected = false;
 };
 }
