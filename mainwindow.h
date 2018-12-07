@@ -37,7 +37,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     cs457::tcpClientSocket clientSocket;
-    void displayMessage(string message, Ui::MainWindow *myui);
+    void displayMessage(string message, Ui::MainWindow *myui, string tab = "main");
     unique_ptr<std::thread> rcvThread;
     QFuture<void> future;
     void receive(Ui::MainWindow *myui);
@@ -45,6 +45,7 @@ private:
     void addNewChannel(string channelName);
     cs457::client client;
     map<string, QWidget*> channelMap;
+    bool debug = false;
 
 };
 

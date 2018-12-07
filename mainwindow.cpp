@@ -35,11 +35,20 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::displayMessage(string msg, Ui::MainWindow *myui)
+void MainWindow::displayMessage(string msg, Ui::MainWindow *myui, string tab /*= "main*/)
 {
-    ui->plainTextEdit->moveCursor (QTextCursor::End);
-    string displaymsg = "server: " + msg + "\n";
-    myui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
+    if(tab == "main"){
+        ui->plainTextEdit->moveCursor (QTextCursor::End);
+        string displaymsg = "server: " + msg + "\n";
+        myui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
+    }
+    else{
+        QWidget* tabToDisplay = channelMap[tab];
+        //come back here after you find the object names.
+        QPlainTextEdit* box = tabToDisplay->findChild<QPlainTextEdit*>(QString::fromStdString(tab + "_text"));
+        string displaymsg = msg + "\n";
+        box->insertPlainText(QString::fromStdString(displaymsg));
+    }
 
 }
 
@@ -69,8 +78,11 @@ void MainWindow::on_send_clicked()
     ui->plainTextEdit->moveCursor (QTextCursor::End);
 
     //show it, for testing. later show your message when you privmsg
-    string displaymsg = "user: " + command + "\n";
-    ui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
+    if(debug)
+    {
+        string displaymsg = "user: " + command + "\n";
+        ui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
+    }
     //clientSocket.sendString(sendmsg + "\r\n",false);
 
     //now do what command used to do.
@@ -91,11 +103,12 @@ void MainWindow::on_send_clicked()
         else if (msg.command == "PRIVMSG")
         {
             //send out what you said. lets deal with dmfisrt
-            displayMessage(client.username + ": " + msg.params[1] + "\n", ui);
+
             if(channelMap.find(msg.params[0]) == channelMap.end())
             {
                 addNewChannel(msg.params[0]);
             }
+            displayMessage(client.username + ": " + msg.params[1] + "\n", ui, msg.params[0]);
             client.send(command);
 
         }
@@ -143,13 +156,16 @@ void MainWindow::addNewChannel(string newChannelName)
 {
     //go to "convenient" Qstring
     QString newChannelQ = QString::fromStdString(newChannelName);
+    QString newTextQ = QString::fromStdString(newChannelName+"_text");
     //create the new tab object
     QWidget* newTab = new QWidget(ui->verticalLayoutWidget);
     //call it newchannelname
     newTab->setObjectName(newChannelQ);
     newTab->setWindowTitle(newChannelQ);
     auto newOutputPage = new QPlainTextEdit(newTab);
+    newOutputPage->setObjectName(newTextQ);
     newOutputPage->setGeometry(QRect(0, 0, 531, 231));
+    //cout << "Name: " + newOutputPage->objectName().toStdString() << endl;
     ui->tabWidget->addTab(newTab, newChannelQ);
     ui->tabWidget->setTabsClosable(true);
 
