@@ -37,13 +37,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::displayMessage(string msg, Ui::MainWindow *myui)
 {
-    //ui->plainTextEdit->moveCursor (QTextCursor::End);
+    ui->plainTextEdit->moveCursor (QTextCursor::End);
     string displaymsg = "server: " + msg + "\n";
     myui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
 
 }
 
-void MainWindow::test(Ui::MainWindow *myui)
+void MainWindow::receive(Ui::MainWindow *myui)
 {
     while(continueReceiveing){
         cout << "Attempting to recv from socket." << endl;
@@ -109,7 +109,7 @@ void MainWindow::on_connect_clicked()
     continueReceiveing = true;
     //rcvThread = make_unique<std::thread>(&MainWindow::test, ui);
     //QFuture<void> future = QtConcurrent::run(aFunction)
-    future = QtConcurrent::run(this, &MainWindow::test, ui);
+    future = QtConcurrent::run(this, &MainWindow::receive, ui);
 
 }
 
@@ -126,6 +126,9 @@ void MainWindow::addNewChannel(string newChannelName)
     newOutputPage->setGeometry(QRect(0, 0, 531, 231));
     ui->tabWidget->addTab(newTab, newChannelQ);
     ui->tabWidget->setTabsClosable(true);
+
+    //Add tab to map
+    client.channelMap[newChannelName] = newTab;
 
 }
 

@@ -38,7 +38,7 @@ private:
     void displayMessage(string message, Ui::MainWindow *myui);
     unique_ptr<std::thread> rcvThread;
     QFuture<void> future;
-    void test(Ui::MainWindow *myui);
+    void receive(Ui::MainWindow *myui);
     bool continueReceiveing;
     void addNewChannel(string channelName);
     cs457::client client;

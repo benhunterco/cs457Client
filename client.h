@@ -3,6 +3,8 @@
 
 #include <string>
 #include <iostream>
+#include <map>
+#include <QWidget>
 #include <tcpClientSocket.h>
 #include "Parsing.h"
 
@@ -34,6 +36,9 @@ public:
     string command(std::string command);
 
     bool connected = false;
+
+    //map channelnames to tabs.
+    std::map<std::string, QWidget*> channelMap;
 };
 }
 
