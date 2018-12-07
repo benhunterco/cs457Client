@@ -38,7 +38,7 @@ MainWindow::~MainWindow()
 void MainWindow::displayMessage(string msg, Ui::MainWindow *myui, string tab /*= "main*/)
 {
     if(tab == "main"){
-        ui->plainTextEdit->moveCursor (QTextCursor::End);
+
         string displaymsg = "server: " + msg + "\n";
         myui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
     }
@@ -47,6 +47,7 @@ void MainWindow::displayMessage(string msg, Ui::MainWindow *myui, string tab /*=
         //come back here after you find the object names.
         QPlainTextEdit* box = tabToDisplay->findChild<QPlainTextEdit*>(QString::fromStdString(tab + "_text"));
         string displaymsg = msg + "\n";
+        ui->plainTextEdit->moveCursor (QTextCursor::End);
         box->insertPlainText(QString::fromStdString(displaymsg));
     }
 
