@@ -64,21 +64,36 @@ void MainWindow::receive(Ui::MainWindow *myui)
 
 void MainWindow::on_send_clicked()
 {
-    string sendmsg = ui->messageInput->text().toStdString();
+    //change the qstring to string
+    string command = ui->messageInput->text().toStdString();
     ui->plainTextEdit->moveCursor (QTextCursor::End);
-    string displaymsg = "user: " + sendmsg + "\n";
+
+    //show it, for testing. later show your message when you privmsg
+    string displaymsg = "user: " + command + "\n";
     ui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
     //clientSocket.sendString(sendmsg + "\r\n",false);
-    string sendInfo = client.command(sendmsg);
-    //for now, just display it. Could use it for status?
-    if(sendInfo == "QUIT")
+
+    //now do what command used to do.
+    if(command[0] == '/')
     {
-        continueReceiveing = false;
+        command = command.substr(1, command.length() - 1);
+        Parsing::IRC_message msg(command + "\r\n");
+        if (msg.command == "HELP")
+        {
+            displayMessage("A helpful message", ui);
+        }
+        else if (msg.command == "QUIT")
+        {
+            client.send(command);
+            continueReceiveing = false;
+            client.sock->closeSocket();
+        }
+        else
+        {
+            client.send(command);
+        }
     }
-    else
-    {
-    ui->plainTextEdit->insertPlainText (QString::fromStdString(sendInfo));
-    }
+
     //receive();
 }
 

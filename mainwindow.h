@@ -5,6 +5,7 @@
 #include "tcpClientSocket.h"
 #include "QtConcurrent/qtconcurrentrun.h"
 #include "client.h"
+#include "Parsing.h"
 #include <iostream>
 #include <string>
 #include <thread>
