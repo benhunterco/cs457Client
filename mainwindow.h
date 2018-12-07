@@ -9,6 +9,7 @@
 #include <iostream>
 #include <string>
 #include <thread>
+#include <map>
 
 using namespace std;
 
@@ -43,6 +44,7 @@ private:
     bool continueReceiveing;
     void addNewChannel(string channelName);
     cs457::client client;
+    map<string, QWidget*> channelMap;
 
 };
 

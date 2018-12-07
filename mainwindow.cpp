@@ -88,6 +88,17 @@ void MainWindow::on_send_clicked()
             continueReceiveing = false;
             client.sock->closeSocket();
         }
+        else if (msg.command == "PRIVMSG")
+        {
+            //send out what you said. lets deal with dmfisrt
+            displayMessage(client.username + ": " + msg.params[1] + "\n", ui);
+            if(channelMap.find(msg.params[0]) == channelMap.end())
+            {
+                addNewChannel(msg.params[0]);
+            }
+            client.send(command);
+
+        }
         else
         {
             client.send(command);
@@ -143,7 +154,7 @@ void MainWindow::addNewChannel(string newChannelName)
     ui->tabWidget->setTabsClosable(true);
 
     //Add tab to map
-    client.channelMap[newChannelName] = newTab;
+    channelMap[newChannelName] = newTab;
 
 }
 
