@@ -72,18 +72,39 @@ void MainWindow::receive(Ui::MainWindow *myui)
             {
                 if(msg.name != client.username)
                 {
-                    if(channelMap.find(msg.params[0]) == channelMap.end())
+                    //if its a channel
+                    if(msg.params[0][0] == '#')
                     {
-                        //add new channel for incoming message.
-                        //can block messages server side.
-                        displayMessage("New message from: " + msg.name + " to " + msg.params[0] + ". PRIVMSG back to create new tab.\n", myui);
-                        displayMessage(msg.params[1], myui);
-                        //addNewChannel(msg.params[0]);
+                        if(channelMap.find(msg.params[0]) == channelMap.end())
+                        {
+                            //add new channel for incoming message.
+                            //can block messages server side.
+                            displayMessage("New message from: " + msg.name + " to " + msg.params[0] + ". PRIVMSG back to create new tab.\n", myui);
+                            displayMessage(msg.params[1], myui);
+                            //addNewChannel(msg.params[0]);
+                        }
+                        else
+                        {
+                            //display
+                            displayMessage(msg.name + ": " + msg.params[1], myui, msg.params[0], false);
+                        }
                     }
                     else
                     {
-                        //display
-                        displayMessage(msg.name + ": " + msg.params[1], myui, msg.params[0], false);
+                        //in this case it was sent to user
+                        if(channelMap.find(msg.name) == channelMap.end())
+                        {
+                            //add new channel for incoming message.
+                            //can block messages server side.
+                            displayMessage("New message from: " + msg.name + ". PRIVMSG back to create new tab.\n", myui);
+                            displayMessage(msg.params[1], myui);
+                            //addNewChannel(msg.params[0]);
+                        }
+                        else
+                        {
+                            //display
+                            displayMessage(msg.name + ": " + msg.params[1], myui, msg.name, false);
+                        }
                     }
                 }
             }
@@ -166,6 +187,17 @@ void MainWindow::on_send_clicked()
             client.send(command);
         }
     }
+    else
+    {
+        //send to active window
+        //first get name of active recipient
+        string recipient = ui->tabWidget->currentWidget()->objectName().toStdString();
+        if(recipient != "tab")
+        {
+            client.send("PRIVMSG " + recipient + " :" + command);
+            displayMessage(client.username + ": " + command + "\n", ui, recipient, true);
+        }
+    }
 
     //receive();
 }
@@ -215,6 +247,7 @@ void MainWindow::addNewChannel(string newChannelName)
     auto newOutputPage = new QPlainTextEdit(newTab);
     newOutputPage->setObjectName(newTextQ);
     newOutputPage->setGeometry(QRect(0, 0, 531, 231));
+    newOutputPage->clear();
     //cout << "Name: " + newOutputPage->objectName().toStdString() << endl;
     ui->tabWidget->addTab(newTab, newChannelQ);
     ui->tabWidget->setTabsClosable(true);
