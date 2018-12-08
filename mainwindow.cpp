@@ -243,7 +243,7 @@ void MainWindow::addNewChannel(string newChannelName)
     QString newChannelQ = QString::fromStdString(newChannelName);
     QString newTextQ = QString::fromStdString(newChannelName+"_text");
     //create the new tab object
-    QWidget* newTab = new QWidget(ui->verticalLayoutWidget);
+    QWidget* newTab = new QWidget();
     //call it newchannelname
     newTab->setObjectName(newChannelQ);
     newTab->setWindowTitle(newChannelQ);
