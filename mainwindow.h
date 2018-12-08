@@ -32,7 +32,7 @@ private slots:
 
     void on_connect_clicked();
 
-    void on_pushButton_clicked();
+    //void on_pushButton_clicked();
 
     void slotCloseTab(int);
 

@@ -250,7 +250,7 @@ void MainWindow::addNewChannel(string newChannelName)
 
     auto newOutputPage = new QPlainTextEdit(newTab);
     newOutputPage->setObjectName(newTextQ);
-    newOutputPage->setGeometry(QRect(0, 0, 531, 231));
+    newOutputPage->setGeometry(QRect(0, 0, 701, 471));
     newOutputPage->clear();
     //cout << "Name: " + newOutputPage->objectName().toStdString() << endl;
     ui->tabWidget->addTab(newTab, newChannelQ);
@@ -264,10 +264,11 @@ void MainWindow::addNewChannel(string newChannelName)
 
 }
 
+/*
 void MainWindow::on_pushButton_clicked()
 {
     addNewChannel("#Channel");
-}
+}*/
 
 //TODO:
 /*https://stackoverflow.com/questions/35597431/closable-qtabwidget-tabs-but-not-all-of-them*/

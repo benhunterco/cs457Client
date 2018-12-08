@@ -72,7 +72,7 @@ public:
         tab->setObjectName(QStringLiteral("tab"));
         plainTextEdit = new QPlainTextEdit(tab);
         plainTextEdit->setObjectName(QStringLiteral("plainTextEdit"));
-        plainTextEdit->setGeometry(QRect(0, 0, 531, 231));
+        plainTextEdit->setGeometry(QRect(0, 0, 1000, 1000));
         tabWidget->addTab(tab, QString());
         tab_2 = new QWidget();
         tab_2->setObjectName(QStringLiteral("tab_2"));
