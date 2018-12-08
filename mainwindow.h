@@ -3,10 +3,13 @@
 
 #include <QMainWindow>
 #include "tcpClientSocket.h"
+#include "QtConcurrent/qtconcurrentrun.h"
 #include "client.h"
+#include "Parsing.h"
 #include <iostream>
 #include <string>
 #include <thread>
+#include <map>
 
 using namespace std;
 
@@ -31,15 +34,22 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void slotCloseTab(int);
+
+    void on_messageInput_returnPressed();
+
 private:
     Ui::MainWindow *ui;
     cs457::tcpClientSocket clientSocket;
-    void displayMessage(string message, Ui::MainWindow *myui);
+    void displayMessage(string message, Ui::MainWindow *myui, string tab = "main", bool focus = false);
     unique_ptr<std::thread> rcvThread;
-    void test(Ui::MainWindow *myui);
+    QFuture<void> future;
+    void receive(Ui::MainWindow *myui);
     bool continueReceiveing;
     void addNewChannel(string channelName);
     cs457::client client;
+    map<string, QWidget*> channelMap;
+    bool debug = false;
 
 };
 

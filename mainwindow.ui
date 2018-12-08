@@ -59,32 +59,6 @@
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="connect">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>380</y>
-      <width>89</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Connect</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="custom_port">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>380</y>
-      <width>121</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="placeholderText">
-     <string>custom port</string>
-    </property>
-   </widget>
    <widget class="QLineEdit" name="custom_address">
     <property name="geometry">
      <rect>
@@ -98,37 +72,11 @@
      <string>custom address</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="send">
-    <property name="geometry">
-     <rect>
-      <x>290</x>
-      <y>270</y>
-      <width>89</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Send</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="messageInput">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>270</y>
-      <width>291</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>320</x>
-      <y>350</y>
+      <x>290</x>
+      <y>390</y>
       <width>89</width>
       <height>25</height>
      </rect>
@@ -137,6 +85,69 @@
      <string>PushButton</string>
     </property>
    </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>380</y>
+      <width>177</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLineEdit" name="custom_port">
+       <property name="placeholderText">
+        <string>custom port</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="connect">
+       <property name="text">
+        <string>Connect</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>270</y>
+      <width>177</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLineEdit" name="messageInput">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="send">
+       <property name="text">
+        <string>Send</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>2</width>
+      <height>2</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout"/>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -144,7 +155,7 @@
      <x>0</x>
      <y>0</y>
      <width>542</width>
-     <height>22</height>
+     <height>17</height>
     </rect>
    </property>
   </widget>

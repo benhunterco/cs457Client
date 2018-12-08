@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
@@ -37,12 +38,18 @@ public:
     QWidget *tab;
     QPlainTextEdit *plainTextEdit;
     QWidget *tab_2;
-    QPushButton *connect;
-    QLineEdit *custom_port;
     QLineEdit *custom_address;
-    QPushButton *send;
-    QLineEdit *messageInput;
     QPushButton *pushButton;
+    QWidget *widget;
+    QHBoxLayout *horizontalLayout;
+    QLineEdit *custom_port;
+    QPushButton *connect;
+    QWidget *widget1;
+    QHBoxLayout *horizontalLayout_2;
+    QLineEdit *messageInput;
+    QPushButton *send;
+    QWidget *widget2;
+    QVBoxLayout *verticalLayout;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -78,28 +85,60 @@ public:
 
         verticalLayout_2->addWidget(tabWidget);
 
-        connect = new QPushButton(centralWidget);
-        connect->setObjectName(QStringLiteral("connect"));
-        connect->setGeometry(QRect(130, 380, 89, 25));
-        custom_port = new QLineEdit(centralWidget);
-        custom_port->setObjectName(QStringLiteral("custom_port"));
-        custom_port->setGeometry(QRect(0, 380, 121, 25));
         custom_address = new QLineEdit(centralWidget);
         custom_address->setObjectName(QStringLiteral("custom_address"));
         custom_address->setGeometry(QRect(0, 350, 121, 25));
-        send = new QPushButton(centralWidget);
-        send->setObjectName(QStringLiteral("send"));
-        send->setGeometry(QRect(290, 270, 89, 31));
-        messageInput = new QLineEdit(centralWidget);
-        messageInput->setObjectName(QStringLiteral("messageInput"));
-        messageInput->setGeometry(QRect(0, 270, 291, 31));
         pushButton = new QPushButton(centralWidget);
         pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setGeometry(QRect(320, 350, 89, 25));
+        pushButton->setGeometry(QRect(290, 390, 89, 25));
+        widget = new QWidget(centralWidget);
+        widget->setObjectName(QStringLiteral("widget"));
+        widget->setGeometry(QRect(0, 380, 177, 24));
+        horizontalLayout = new QHBoxLayout(widget);
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        custom_port = new QLineEdit(widget);
+        custom_port->setObjectName(QStringLiteral("custom_port"));
+
+        horizontalLayout->addWidget(custom_port);
+
+        connect = new QPushButton(widget);
+        connect->setObjectName(QStringLiteral("connect"));
+
+        horizontalLayout->addWidget(connect);
+
+        widget1 = new QWidget(centralWidget);
+        widget1->setObjectName(QStringLiteral("widget1"));
+        widget1->setGeometry(QRect(0, 270, 177, 24));
+        horizontalLayout_2 = new QHBoxLayout(widget1);
+        horizontalLayout_2->setSpacing(6);
+        horizontalLayout_2->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
+        messageInput = new QLineEdit(widget1);
+        messageInput->setObjectName(QStringLiteral("messageInput"));
+
+        horizontalLayout_2->addWidget(messageInput);
+
+        send = new QPushButton(widget1);
+        send->setObjectName(QStringLiteral("send"));
+
+        horizontalLayout_2->addWidget(send);
+
+        widget2 = new QWidget(centralWidget);
+        widget2->setObjectName(QStringLiteral("widget2"));
+        widget2->setGeometry(QRect(0, 0, 2, 2));
+        verticalLayout = new QVBoxLayout(widget2);
+        verticalLayout->setSpacing(6);
+        verticalLayout->setContentsMargins(11, 11, 11, 11);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        verticalLayout->setContentsMargins(0, 0, 0, 0);
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 542, 22));
+        menuBar->setGeometry(QRect(0, 0, 542, 17));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -121,12 +160,12 @@ public:
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "Tab 1", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindow", "Tab 2", Q_NULLPTR));
-        connect->setText(QApplication::translate("MainWindow", "Connect", Q_NULLPTR));
-        custom_port->setPlaceholderText(QApplication::translate("MainWindow", "custom port", Q_NULLPTR));
         custom_address->setPlaceholderText(QApplication::translate("MainWindow", "custom address", Q_NULLPTR));
-        send->setText(QApplication::translate("MainWindow", "Send", Q_NULLPTR));
-        messageInput->setText(QString());
         pushButton->setText(QApplication::translate("MainWindow", "PushButton", Q_NULLPTR));
+        custom_port->setPlaceholderText(QApplication::translate("MainWindow", "custom port", Q_NULLPTR));
+        connect->setText(QApplication::translate("MainWindow", "Connect", Q_NULLPTR));
+        messageInput->setText(QString());
+        send->setText(QApplication::translate("MainWindow", "Send", Q_NULLPTR));
     } // retranslateUi
 
 };
