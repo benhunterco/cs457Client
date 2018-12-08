@@ -233,11 +233,14 @@ void MainWindow::on_pushButton_clicked()
 /*https://stackoverflow.com/questions/35597431/closable-qtabwidget-tabs-but-not-all-of-them*/
 void MainWindow::slotCloseTab(int index)
 {
-    //remove from channel map too
-    std::string channelToClose = ui->tabWidget->widget(index)->objectName().toStdString();
-    channelMap.erase(channelToClose);
-    //delete ui element.
-    delete ui->tabWidget->widget(index);
+    if(index > 0)
+    {
+        //remove from channel map too
+        std::string channelToClose = ui->tabWidget->widget(index)->objectName().toStdString();
+        channelMap.erase(channelToClose);
+        //delete ui element.
+        delete ui->tabWidget->widget(index);
+    }
 }
 
 
