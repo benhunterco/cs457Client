@@ -150,6 +150,17 @@ void MainWindow::on_send_clicked()
             }
             client.send(command);
         }
+        else if (msg.command == "PART")
+        {
+            if(channelMap.find(msg.params[0]) != channelMap.end())
+            {
+                //get the channel
+                QWidget * tab = channelMap[msg.params[0]];
+                int toDelete = ui->tabWidget->indexOf(tab);
+                slotCloseTab(toDelete);
+            }
+            client.send(command);
+        }
         else
         {
             client.send(command);
