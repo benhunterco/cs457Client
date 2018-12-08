@@ -200,13 +200,14 @@ void MainWindow::addNewChannel(string newChannelName)
     //call it newchannelname
     newTab->setObjectName(newChannelQ);
     newTab->setWindowTitle(newChannelQ);
+
     auto newOutputPage = new QPlainTextEdit(newTab);
     newOutputPage->setObjectName(newTextQ);
     newOutputPage->setGeometry(QRect(0, 0, 531, 231));
     //cout << "Name: " + newOutputPage->objectName().toStdString() << endl;
     ui->tabWidget->addTab(newTab, newChannelQ);
     ui->tabWidget->setTabsClosable(true);
-
+    connect(ui->tabWidget,SIGNAL(tabCloseRequested(int)),this,SLOT(slotCloseTab(int)));//ty stack overflow. Makes tabs closable
     //Add tab to map
     channelMap[newChannelName] = newTab;
 
@@ -218,11 +219,15 @@ void MainWindow::on_pushButton_clicked()
 }
 
 //TODO:
-/*https://stackoverflow.com/questions/35597431/closable-qtabwidget-tabs-but-not-all-of-them
+/*https://stackoverflow.com/questions/35597431/closable-qtabwidget-tabs-but-not-all-of-them*/
 void MainWindow::slotCloseTab(int index)
 {
-    delete _pTabWidget->widget(index);
-}*/
+    //remove from channel map too
+    std::string channelToClose = ui->tabWidget->widget(index)->objectName().toStdString();
+    channelMap.erase(channelToClose);
+    //delete ui element.
+    delete ui->tabWidget->widget(index);
+}
 
 
 

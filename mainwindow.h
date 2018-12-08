@@ -34,6 +34,8 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void slotCloseTab(int);
+
 private:
     Ui::MainWindow *ui;
     cs457::tcpClientSocket clientSocket;
