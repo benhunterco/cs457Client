@@ -32,11 +32,15 @@ private slots:
 
     void on_connect_clicked();
 
-    void on_pushButton_clicked();
+    //void on_pushButton_clicked();
 
     void slotCloseTab(int);
 
     void on_messageInput_returnPressed();
+
+    void on_credentials_clicked();
+
+    void on_password_returnPressed();
 
 private:
     Ui::MainWindow *ui;

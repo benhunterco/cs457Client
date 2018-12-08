@@ -226,7 +226,7 @@ void MainWindow::on_connect_clicked()
     {
         //register the user
         //string = get registration?
-        string registration = ":bobby PASS @\r\n";
+        string registration = ":" + client.username + " PASS " + client.password + "\r\n";
         client.sock->sendString(registration, false);
     }
 
@@ -243,14 +243,14 @@ void MainWindow::addNewChannel(string newChannelName)
     QString newChannelQ = QString::fromStdString(newChannelName);
     QString newTextQ = QString::fromStdString(newChannelName+"_text");
     //create the new tab object
-    QWidget* newTab = new QWidget(ui->verticalLayoutWidget);
+    QWidget* newTab = new QWidget();
     //call it newchannelname
     newTab->setObjectName(newChannelQ);
     newTab->setWindowTitle(newChannelQ);
 
     auto newOutputPage = new QPlainTextEdit(newTab);
     newOutputPage->setObjectName(newTextQ);
-    newOutputPage->setGeometry(QRect(0, 0, 531, 231));
+    newOutputPage->setGeometry(QRect(0, 0, 701, 471));
     newOutputPage->clear();
     //cout << "Name: " + newOutputPage->objectName().toStdString() << endl;
     ui->tabWidget->addTab(newTab, newChannelQ);
@@ -264,10 +264,11 @@ void MainWindow::addNewChannel(string newChannelName)
 
 }
 
+/*
 void MainWindow::on_pushButton_clicked()
 {
     addNewChannel("#Channel");
-}
+}*/
 
 //TODO:
 /*https://stackoverflow.com/questions/35597431/closable-qtabwidget-tabs-but-not-all-of-them*/
@@ -282,6 +283,25 @@ void MainWindow::slotCloseTab(int index)
         delete ui->tabWidget->widget(index);
     }
 }
+
+
+void MainWindow::on_password_returnPressed()
+{
+    //treat this as clicking the button to the right of it.
+    on_credentials_clicked();
+}
+void MainWindow::on_credentials_clicked()
+{
+    if(!ui->username->text().isEmpty())
+    {
+        cout << "set credentials" << endl;
+        client.username = ui->username->text().toStdString();
+        if(!ui->password->text().isEmpty())
+            client.password = ui->password->text().toStdString();
+        //otherwise it remains as @
+    }
+}
+
 
 
 
