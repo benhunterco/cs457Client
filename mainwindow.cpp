@@ -70,24 +70,28 @@ void MainWindow::receive(Ui::MainWindow *myui)
             Parsing::IRC_message msg(rcvmsg);
             if(msg.command == "PRIVMSG")
             {
-                if(channelMap.find(msg.params[0]) == channelMap.end())
+                if(msg.name != client.username)
                 {
-                    //add new channel for incoming message.
-                    //can block messages server side.
-                    displayMessage("New message from: " + msg.name + " to " + msg.params[0] + ". PRIVMSG back to create new tab.\n", myui);
-                    displayMessage(msg.params[1], myui);
-                    //addNewChannel(msg.params[0]);
-                }
-                else
-                {
-                    //display
-                    displayMessage(msg.name + ": " + msg.params[1], myui, msg.params[0], false);
+                    if(channelMap.find(msg.params[0]) == channelMap.end())
+                    {
+                        //add new channel for incoming message.
+                        //can block messages server side.
+                        displayMessage("New message from: " + msg.name + " to " + msg.params[0] + ". PRIVMSG back to create new tab.\n", myui);
+                        displayMessage(msg.params[1], myui);
+                        //addNewChannel(msg.params[0]);
+                    }
+                    else
+                    {
+                        //display
+                        displayMessage(msg.name + ": " + msg.params[1], myui, msg.params[0], false);
+                    }
                 }
             }
             else
             {
                 displayMessage(rcvmsg, myui);
             }
+            rcvmsg.erase();
         }
         else
         {
@@ -137,6 +141,14 @@ void MainWindow::on_send_clicked()
             displayMessage(client.username + ": " + msg.params[1] + "\n", ui, msg.params[0], true);
             client.send(command);
 
+        }
+        else if (msg.command == "JOIN")
+        {
+            if(channelMap.find(msg.params[0]) == channelMap.end())
+            {
+                addNewChannel(msg.params[0]);
+            }
+            client.send(command);
         }
         else
         {
