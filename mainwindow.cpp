@@ -35,7 +35,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::displayMessage(string msg, Ui::MainWindow *myui, string tab /*= "main*/)
+void MainWindow::displayMessage(string msg, Ui::MainWindow *myui, string tab /*= "main*/, bool focus /*=false*/)
 {
     if(tab == "main"){
 
@@ -49,6 +49,11 @@ void MainWindow::displayMessage(string msg, Ui::MainWindow *myui, string tab /*=
         string displaymsg = msg + "\n";
         ui->plainTextEdit->moveCursor (QTextCursor::End);
         box->insertPlainText(QString::fromStdString(displaymsg));
+
+        //if we want to switch to this tab, do so.
+        if(focus)
+            myui->tabWidget->setCurrentWidget(tabToDisplay);
+
     }
 
 }
@@ -62,7 +67,27 @@ void MainWindow::receive(Ui::MainWindow *myui)
         tie(rcvmsg,v) =  clientSocket.recvString(4096,false);
         if(v > 0)
         {
-             displayMessage(rcvmsg, myui);
+            Parsing::IRC_message msg(rcvmsg);
+            if(msg.command == "PRIVMSG")
+            {
+                if(channelMap.find(msg.params[0]) == channelMap.end())
+                {
+                    //add new channel for incoming message.
+                    //can block messages server side.
+                    displayMessage("New message from: " + msg.name + " to " + msg.params[0] + ". PRIVMSG back to create new tab.\n", myui);
+                    displayMessage(msg.params[1], myui);
+                    //addNewChannel(msg.params[0]);
+                }
+                else
+                {
+                    //display
+                    displayMessage(msg.name + ": " + msg.params[1], myui, msg.params[0], false);
+                }
+            }
+            else
+            {
+                displayMessage(rcvmsg, myui);
+            }
         }
         else
         {
@@ -109,7 +134,7 @@ void MainWindow::on_send_clicked()
             {
                 addNewChannel(msg.params[0]);
             }
-            displayMessage(client.username + ": " + msg.params[1] + "\n", ui, msg.params[0]);
+            displayMessage(client.username + ": " + msg.params[1] + "\n", ui, msg.params[0], true);
             client.send(command);
 
         }

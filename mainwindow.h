@@ -37,7 +37,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     cs457::tcpClientSocket clientSocket;
-    void displayMessage(string message, Ui::MainWindow *myui, string tab = "main");
+    void displayMessage(string message, Ui::MainWindow *myui, string tab = "main", bool focus = false);
     unique_ptr<std::thread> rcvThread;
     QFuture<void> future;
     void receive(Ui::MainWindow *myui);
