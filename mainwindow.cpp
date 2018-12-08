@@ -107,6 +107,12 @@ void MainWindow::receive(Ui::MainWindow *myui)
                         }
                     }
                 }
+            } else if(msg.command == "QUIT")
+            {
+                continueReceiveing = false;
+                client.connected = false;
+                client.sock->closeSocket();
+                //show disconnect message?
             }
             else
             {
@@ -118,6 +124,8 @@ void MainWindow::receive(Ui::MainWindow *myui)
         {
             cout << "Read from empty socket";
             continueReceiveing = false;
+            client.connected = false;
+            //show some sort of message?
         }
     }
 }
@@ -128,78 +136,81 @@ void MainWindow::on_messageInput_returnPressed()
 }
 void MainWindow::on_send_clicked()
 {
-    //change the qstring to string
-    string command = ui->messageInput->text().toStdString();
-    ui->plainTextEdit->moveCursor (QTextCursor::End);
-
-    //show it, for testing. later show your message when you privmsg
-    if(debug)
+    if(client.connected)
     {
-        string displaymsg = "user: " + command + "\n";
-        ui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
-    }
-    //clientSocket.sendString(sendmsg + "\r\n",false);
+        //change the qstring to string
+        string command = ui->messageInput->text().toStdString();
+        ui->plainTextEdit->moveCursor (QTextCursor::End);
 
-    //now do what command used to do.
-    if(command[0] == '/')
-    {
-        command = command.substr(1, command.length() - 1);
-        Parsing::IRC_message msg(command + "\r\n");
-        if (msg.command == "HELP")
+        //show it, for testing. later show your message when you privmsg
+        if(debug)
         {
-            displayMessage("A helpful message", ui);
+            string displaymsg = "user: " + command + "\n";
+            ui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
         }
-        else if (msg.command == "QUIT")
-        {
-            client.send(command);
-            continueReceiveing = false;
-            client.sock->closeSocket();
-        }
-        else if (msg.command == "PRIVMSG")
-        {
-            //send out what you said. lets deal with dmfisrt
+        //clientSocket.sendString(sendmsg + "\r\n",false);
 
-            if(channelMap.find(msg.params[0]) == channelMap.end())
+        //now do what command used to do.
+        if(command[0] == '/')
+        {
+            command = command.substr(1, command.length() - 1);
+            Parsing::IRC_message msg(command + "\r\n");
+            if (msg.command == "HELP")
             {
-                addNewChannel(msg.params[0]);
+                displayMessage("A helpful message", ui);
             }
-            displayMessage(client.username + ": " + msg.params[1] + "\n", ui, msg.params[0], true);
-            client.send(command);
+            else if (msg.command == "QUIT")
+            {
+                client.send(command);
+                continueReceiveing = false;
+                //client.sock->closeSocket();
+            }
+            else if (msg.command == "PRIVMSG")
+            {
+                //send out what you said. lets deal with dmfisrt
 
-        }
-        else if (msg.command == "JOIN")
-        {
-            if(channelMap.find(msg.params[0]) == channelMap.end())
-            {
-                addNewChannel(msg.params[0]);
+                if(channelMap.find(msg.params[0]) == channelMap.end())
+                {
+                    addNewChannel(msg.params[0]);
+                }
+                displayMessage(client.username + ": " + msg.params[1] + "\n", ui, msg.params[0], true);
+                client.send(command);
+
             }
-            client.send(command);
-        }
-        else if (msg.command == "PART")
-        {
-            if(channelMap.find(msg.params[0]) != channelMap.end())
+            else if (msg.command == "JOIN")
             {
-                //get the channel
-                QWidget * tab = channelMap[msg.params[0]];
-                int toDelete = ui->tabWidget->indexOf(tab);
-                slotCloseTab(toDelete);
+                if(channelMap.find(msg.params[0]) == channelMap.end())
+                {
+                    addNewChannel(msg.params[0]);
+                }
+                client.send(command);
             }
-            client.send(command);
+            else if (msg.command == "PART")
+            {
+                if(channelMap.find(msg.params[0]) != channelMap.end())
+                {
+                    //get the channel
+                    QWidget * tab = channelMap[msg.params[0]];
+                    int toDelete = ui->tabWidget->indexOf(tab);
+                    slotCloseTab(toDelete);
+                }
+                client.send(command);
+            }
+            else
+            {
+                client.send(command);
+            }
         }
         else
         {
-            client.send(command);
-        }
-    }
-    else
-    {
-        //send to active window
-        //first get name of active recipient
-        string recipient = ui->tabWidget->currentWidget()->objectName().toStdString();
-        if(recipient != "tab")
-        {
-            client.send("PRIVMSG " + recipient + " :" + command);
-            displayMessage(client.username + ": " + command + "\n", ui, recipient, true);
+            //send to active window
+            //first get name of active recipient
+            string recipient = ui->tabWidget->currentWidget()->objectName().toStdString();
+            if(recipient != "tab")
+            {
+                client.send("PRIVMSG " + recipient + " :" + command);
+                displayMessage(client.username + ": " + command + "\n", ui, recipient, true);
+            }
         }
     }
 
@@ -218,7 +229,7 @@ void MainWindow::on_connect_clicked()
     client.sock->init();
     client.sock->setSocketOptions();
     int val = clientSocket.connectSocket();
-    if (val > 0)
+    if (val != 0)
     {
         cout << "error creating socket" << endl;
     }
@@ -228,13 +239,12 @@ void MainWindow::on_connect_clicked()
         //string = get registration?
         string registration = ":" + client.username + " PASS " + client.password + "\r\n";
         client.sock->sendString(registration, false);
+        continueReceiveing = true;
+        //rcvThread = make_unique<std::thread>(&MainWindow::test, ui);
+        //QFuture<void> future = QtConcurrent::run(aFunction)
+        future = QtConcurrent::run(this, &MainWindow::receive, ui);
+        client.connected = true;
     }
-
-    continueReceiveing = true;
-    //rcvThread = make_unique<std::thread>(&MainWindow::test, ui);
-    //QFuture<void> future = QtConcurrent::run(aFunction)
-    future = QtConcurrent::run(this, &MainWindow::receive, ui);
-
 }
 
 void MainWindow::addNewChannel(string newChannelName)
