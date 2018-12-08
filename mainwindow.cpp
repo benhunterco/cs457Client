@@ -122,6 +122,10 @@ void MainWindow::receive(Ui::MainWindow *myui)
     }
 }
 
+void MainWindow::on_messageInput_returnPressed()
+{
+    on_send_clicked();
+}
 void MainWindow::on_send_clicked()
 {
     //change the qstring to string
@@ -278,6 +282,8 @@ void MainWindow::slotCloseTab(int index)
         delete ui->tabWidget->widget(index);
     }
 }
+
+
 
 
 

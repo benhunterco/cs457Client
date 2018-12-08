@@ -36,6 +36,8 @@ private slots:
 
     void slotCloseTab(int);
 
+    void on_messageInput_returnPressed();
+
 private:
     Ui::MainWindow *ui;
     cs457::tcpClientSocket clientSocket;
