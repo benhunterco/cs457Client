@@ -38,6 +38,10 @@ private slots:
 
     void on_messageInput_returnPressed();
 
+    void on_credentials_clicked();
+
+    void on_password_returnPressed();
+
 private:
     Ui::MainWindow *ui;
     cs457::tcpClientSocket clientSocket;

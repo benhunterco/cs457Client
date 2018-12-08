@@ -226,7 +226,7 @@ void MainWindow::on_connect_clicked()
     {
         //register the user
         //string = get registration?
-        string registration = ":bobby PASS @\r\n";
+        string registration = ":" + client.username + " PASS " + client.password + "\r\n";
         client.sock->sendString(registration, false);
     }
 
@@ -283,6 +283,25 @@ void MainWindow::slotCloseTab(int index)
         delete ui->tabWidget->widget(index);
     }
 }
+
+
+void MainWindow::on_password_returnPressed()
+{
+    //treat this as clicking the button to the right of it.
+    on_credentials_clicked();
+}
+void MainWindow::on_credentials_clicked()
+{
+    if(!ui->username->text().isEmpty())
+    {
+        cout << "set credentials" << endl;
+        client.username = ui->username->text().toStdString();
+        if(!ui->password->text().isEmpty())
+            client.password = ui->password->text().toStdString();
+        //otherwise it remains as @
+    }
+}
+
 
 
 

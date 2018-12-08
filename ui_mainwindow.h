@@ -32,20 +32,26 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralWidget;
+    QWidget *widget;
+    QVBoxLayout *verticalLayout;
+    QWidget *widget1;
     QVBoxLayout *verticalLayout_3;
     QVBoxLayout *verticalLayout_2;
     QTabWidget *tabWidget;
     QWidget *tab;
     QPlainTextEdit *plainTextEdit;
     QWidget *tab_2;
-    QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout_2;
     QLineEdit *messageInput;
     QPushButton *send;
-    QLineEdit *custom_address;
     QHBoxLayout *horizontalLayout;
+    QLineEdit *custom_address;
     QLineEdit *custom_port;
     QPushButton *connect;
+    QHBoxLayout *horizontalLayout_3;
+    QLineEdit *username;
+    QLineEdit *password;
+    QPushButton *credentials;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -54,17 +60,28 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(542, 475);
+        MainWindow->resize(719, 674);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
-        verticalLayout_3 = new QVBoxLayout(centralWidget);
+        widget = new QWidget(centralWidget);
+        widget->setObjectName(QStringLiteral("widget"));
+        verticalLayout = new QVBoxLayout(widget);
+        verticalLayout->setSpacing(6);
+        verticalLayout->setContentsMargins(11, 11, 11, 11);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        widget1 = new QWidget(centralWidget);
+        widget1->setObjectName(QStringLiteral("widget1"));
+        widget1->setGeometry(QRect(0, 0, 721, 611));
+        verticalLayout_3 = new QVBoxLayout(widget1);
         verticalLayout_3->setSpacing(6);
         verticalLayout_3->setContentsMargins(11, 11, 11, 11);
         verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
+        verticalLayout_3->setContentsMargins(0, 0, 0, 0);
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setSpacing(6);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
-        tabWidget = new QTabWidget(centralWidget);
+        tabWidget = new QTabWidget(widget1);
         tabWidget->setObjectName(QStringLiteral("tabWidget"));
         tabWidget->setEnabled(true);
         tabWidget->setTabsClosable(false);
@@ -72,7 +89,7 @@ public:
         tab->setObjectName(QStringLiteral("tab"));
         plainTextEdit = new QPlainTextEdit(tab);
         plainTextEdit->setObjectName(QStringLiteral("plainTextEdit"));
-        plainTextEdit->setGeometry(QRect(0, 0, 1000, 1000));
+        plainTextEdit->setGeometry(QRect(0, 0, 701, 471));
         tabWidget->addTab(tab, QString());
         tab_2 = new QWidget();
         tab_2->setObjectName(QStringLiteral("tab_2"));
@@ -83,21 +100,15 @@ public:
 
         verticalLayout_3->addLayout(verticalLayout_2);
 
-        verticalLayout = new QVBoxLayout();
-        verticalLayout->setSpacing(6);
-        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-
-        verticalLayout_3->addLayout(verticalLayout);
-
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setSpacing(6);
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        messageInput = new QLineEdit(centralWidget);
+        messageInput = new QLineEdit(widget1);
         messageInput->setObjectName(QStringLiteral("messageInput"));
 
         horizontalLayout_2->addWidget(messageInput);
 
-        send = new QPushButton(centralWidget);
+        send = new QPushButton(widget1);
         send->setObjectName(QStringLiteral("send"));
 
         horizontalLayout_2->addWidget(send);
@@ -105,20 +116,20 @@ public:
 
         verticalLayout_3->addLayout(horizontalLayout_2);
 
-        custom_address = new QLineEdit(centralWidget);
-        custom_address->setObjectName(QStringLiteral("custom_address"));
-
-        verticalLayout_3->addWidget(custom_address);
-
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setSpacing(6);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        custom_port = new QLineEdit(centralWidget);
+        custom_address = new QLineEdit(widget1);
+        custom_address->setObjectName(QStringLiteral("custom_address"));
+
+        horizontalLayout->addWidget(custom_address);
+
+        custom_port = new QLineEdit(widget1);
         custom_port->setObjectName(QStringLiteral("custom_port"));
 
         horizontalLayout->addWidget(custom_port);
 
-        connect = new QPushButton(centralWidget);
+        connect = new QPushButton(widget1);
         connect->setObjectName(QStringLiteral("connect"));
 
         horizontalLayout->addWidget(connect);
@@ -126,10 +137,31 @@ public:
 
         verticalLayout_3->addLayout(horizontalLayout);
 
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setSpacing(6);
+        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        username = new QLineEdit(widget1);
+        username->setObjectName(QStringLiteral("username"));
+
+        horizontalLayout_3->addWidget(username);
+
+        password = new QLineEdit(widget1);
+        password->setObjectName(QStringLiteral("password"));
+
+        horizontalLayout_3->addWidget(password);
+
+        credentials = new QPushButton(widget1);
+        credentials->setObjectName(QStringLiteral("credentials"));
+
+        horizontalLayout_3->addWidget(credentials);
+
+
+        verticalLayout_3->addLayout(horizontalLayout_3);
+
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 542, 22));
+        menuBar->setGeometry(QRect(0, 0, 719, 22));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -156,6 +188,9 @@ public:
         custom_address->setPlaceholderText(QApplication::translate("MainWindow", "custom address", Q_NULLPTR));
         custom_port->setPlaceholderText(QApplication::translate("MainWindow", "custom port", Q_NULLPTR));
         connect->setText(QApplication::translate("MainWindow", "Connect", Q_NULLPTR));
+        username->setPlaceholderText(QApplication::translate("MainWindow", "username", Q_NULLPTR));
+        password->setPlaceholderText(QApplication::translate("MainWindow", "password", Q_NULLPTR));
+        credentials->setText(QApplication::translate("MainWindow", "Set Credentials", Q_NULLPTR));
     } // retranslateUi
 
 };
