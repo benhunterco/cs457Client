@@ -250,8 +250,11 @@ void MainWindow::addNewChannel(string newChannelName)
     newOutputPage->clear();
     //cout << "Name: " + newOutputPage->objectName().toStdString() << endl;
     ui->tabWidget->addTab(newTab, newChannelQ);
-    ui->tabWidget->setTabsClosable(true);
-    connect(ui->tabWidget,SIGNAL(tabCloseRequested(int)),this,SLOT(slotCloseTab(int)));//ty stack overflow. Makes tabs closable
+
+    //uncomment to make closable. However this causes segfaults, whereas part does not.
+    //SO just use part.
+    //ui->tabWidget->setTabsClosable(true);
+    //connect(ui->tabWidget,SIGNAL(tabCloseRequested(int)),this,SLOT(slotCloseTab(int)));//ty stack overflow. Makes tabs closable
     //Add tab to map
     channelMap[newChannelName] = newTab;
 
