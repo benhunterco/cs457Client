@@ -167,6 +167,10 @@ void MainWindow::receive(Ui::MainWindow *myui)
                 worker->display(QString::fromStdString(msg.params[1]), QString("main"), false);
                 worker->username(QString::fromStdString(client.username));
             }
+            else if(msg.command == "VERSION")
+            {
+                worker->display(QString::fromStdString(msg.params[0]), QString("main"), false);
+            }
             else
             {
                 worker->display(QString::fromStdString(rcvmsg), QString("main"), false);
@@ -258,6 +262,11 @@ void MainWindow::on_send_clicked()
                 client.username = msg.params[0];
                 //update username bar.
                 worker->username(QString::fromStdString(client.username));
+                client.send(command);
+            }
+            else if (msg.command == "VERSION")
+            {
+                worker->display(QString("Client version 2.0"), QString("main"), false);
                 client.send(command);
             }
             else
