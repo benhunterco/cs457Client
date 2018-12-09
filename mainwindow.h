@@ -49,6 +49,8 @@ private slots:
 
     void connectionFailedSlot(QString Qmsg);
 
+    void updateStatusSlot(QString status);
+
 private:
     Ui::MainWindow *ui;
     cs457::tcpClientSocket clientSocket;

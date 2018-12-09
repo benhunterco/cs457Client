@@ -28,7 +28,11 @@ MainWindow::MainWindow(QWidget *parent, string serverIP, uint port) :
     displayWorker* displayer = new displayWorker;
     connect(displayer, SIGNAL(requestDisplay(QString, QString, bool)), this, SLOT(displayMessageSlot(QString, QString, bool)));
     connect(displayer, SIGNAL(requestFailure(QString)), this, SLOT(connectionFailedSlot(QString)));
+    connect(displayer, SIGNAL(requestStatusUpdate(QString)), this, SLOT(updateStatusSlot(QString)));
     worker = displayer;
+
+    //add status bar, tell if you're connected or not.
+    ui->statusBar->showMessage(tr("Disconnected"));
 
 }
 
@@ -149,6 +153,7 @@ void MainWindow::receive(Ui::MainWindow *myui)
                 client.connected = false;
                 client.sock->closeSocket();
                 //show disconnect message?
+                worker->status(QString("Disconnected (quit)"));
             }
             else
             {
@@ -164,6 +169,7 @@ void MainWindow::receive(Ui::MainWindow *myui)
             //show some sort of message?
             //connectionFailed("Connection to remote host lost");
             worker->failure(QString("Connection to remote host lost"));
+            worker->status(QString("Disconnected (connection lost)"));
 
         }
     }
@@ -287,6 +293,7 @@ void MainWindow::on_connect_clicked()
         //qRegisterMetaType<bool>();
         future = QtConcurrent::run(this, &MainWindow::receive, ui);
         client.connected = true;
+        worker->status(QString("Connected"));
     }
 }
 
@@ -368,6 +375,11 @@ void MainWindow::connectionFailedSlot(QString Qmsg)
     QMessageBox msgBox(ui->centralWidget);
     msgBox.setText(Qmsg);
     msgBox.exec();
+}
+
+void MainWindow::updateStatusSlot(QString status)
+{
+    ui->statusBar->showMessage(status);
 }
 
 
