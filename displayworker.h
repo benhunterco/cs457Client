@@ -11,11 +11,13 @@ public:
     void display(QString message, QString tab, bool focus) { emit requestDisplay(message, tab, focus);}
     void failure(QString message) { emit requestFailure(message);}
     void status(QString status) {emit requestStatusUpdate(status);}
+    void username(QString username) { emit requestUsernameUpdate(username);}
 
 signals:
     void requestDisplay(QString message, QString tab, bool focus);
     void requestFailure(QString message);
     void requestStatusUpdate(QString status);
+    void requestUsernameUpdate(QString username);
 };
 
 #endif // DISPLAYWORKER_H

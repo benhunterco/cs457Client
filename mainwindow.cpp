@@ -29,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent, string serverIP, uint port) :
     connect(displayer, SIGNAL(requestDisplay(QString, QString, bool)), this, SLOT(displayMessageSlot(QString, QString, bool)));
     connect(displayer, SIGNAL(requestFailure(QString)), this, SLOT(connectionFailedSlot(QString)));
     connect(displayer, SIGNAL(requestStatusUpdate(QString)), this, SLOT(updateStatusSlot(QString)));
+    connect(displayer, SIGNAL(requestUsernameUpdate(QString)), this, SLOT(updateUsernameSlot(QString)));
     worker = displayer;
 
     //add status bar, tell if you're connected or not.
@@ -160,6 +161,12 @@ void MainWindow::receive(Ui::MainWindow *myui)
                 worker->display(QString::fromStdString("received ping"), QString("main"), false);
                 client.sock->sendString(":" + client.username + " PONG", false);
             }
+            else if(msg.command == "NICK")
+            {
+                client.username = msg.params[0];
+                worker->display(QString::fromStdString(msg.params[1]), QString("main"), false);
+                worker->username(QString::fromStdString(client.username));
+            }
             else
             {
                 worker->display(QString::fromStdString(rcvmsg), QString("main"), false);
@@ -244,6 +251,13 @@ void MainWindow::on_send_clicked()
                     int toDelete = ui->tabWidget->indexOf(tab);
                     slotCloseTab(toDelete);
                 }
+                client.send(command);
+            }
+            else if (msg.command == "NICK")
+            {
+                client.username = msg.params[0];
+                //update username bar.
+                worker->username(QString::fromStdString(client.username));
                 client.send(command);
             }
             else
@@ -385,6 +399,11 @@ void MainWindow::connectionFailedSlot(QString Qmsg)
 void MainWindow::updateStatusSlot(QString status)
 {
     ui->statusBar->showMessage(status);
+}
+
+void MainWindow::updateUsernameSlot(QString username)
+{
+    ui->username->setText(username);
 }
 
 

@@ -51,6 +51,8 @@ private slots:
 
     void updateStatusSlot(QString status);
 
+    void updateUsernameSlot(QString username);
+
 private:
     Ui::MainWindow *ui;
     cs457::tcpClientSocket clientSocket;
