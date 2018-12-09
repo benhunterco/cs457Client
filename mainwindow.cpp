@@ -155,6 +155,11 @@ void MainWindow::receive(Ui::MainWindow *myui)
                 //show disconnect message?
                 worker->status(QString("Disconnected (quit)"));
             }
+            else if(msg.command == "PING")
+            {
+                worker->display(QString::fromStdString("received ping"), QString("main"), false);
+                client.sock->sendString(":" + client.username + " PONG", false);
+            }
             else
             {
                 worker->display(QString::fromStdString(rcvmsg), QString("main"), false);
