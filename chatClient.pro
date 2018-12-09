@@ -37,7 +37,8 @@ HEADERS += \
     tcpClientSocket.h \
     customtabwidget.h \
     client.h \
-    Parsing.h
+    Parsing.h \
+    displayworker.h
 
 FORMS += \
         mainwindow.ui

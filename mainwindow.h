@@ -6,6 +6,7 @@
 #include "QtConcurrent/qtconcurrentrun.h"
 #include "client.h"
 #include "Parsing.h"
+#include "displayworker.h"
 #include <iostream>
 #include <string>
 #include <thread>
@@ -43,6 +44,8 @@ private slots:
 
     void on_password_returnPressed();
 
+    void displayMessageSlot(QString message, QString tab, bool focus = false);
+
 private:
     Ui::MainWindow *ui;
     cs457::tcpClientSocket clientSocket;
@@ -57,6 +60,8 @@ private:
     bool debug = false;
 
     void connectionFailed(std::string msg = "Connection failed");
+
+    displayWorker* worker;
 
 };
 

@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "tcpClientSocket.h"
+#include "displayworker.h"
 #include <iostream>
 #include <string>
 #include <thread>
@@ -38,6 +39,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::displayMessage(string msg, Ui::MainWindow *myui, string tab /*= "main*/, bool focus /*=false*/)
 {
+    cout << "here" << endl;
     if(tab == "main"){
 
         string displaymsg = "server: " + msg + "\n";
@@ -48,7 +50,7 @@ void MainWindow::displayMessage(string msg, Ui::MainWindow *myui, string tab /*=
         //come back here after you find the object names.
         QPlainTextEdit* box = tabToDisplay->findChild<QPlainTextEdit*>(QString::fromStdString(tab + "_text"));
         string displaymsg = msg + "\n";
-        ui->plainTextEdit->moveCursor (QTextCursor::End);
+        myui->plainTextEdit->moveCursor (QTextCursor::End);
         box->insertPlainText(QString::fromStdString(displaymsg));
 
         //if we want to switch to this tab, do so.
@@ -56,7 +58,34 @@ void MainWindow::displayMessage(string msg, Ui::MainWindow *myui, string tab /*=
             myui->tabWidget->setCurrentWidget(tabToDisplay);
 
     }
+    cout << "tohere" << endl;
 
+}
+
+void MainWindow::displayMessageSlot(QString Qmessage, QString Qtab, bool focus /* = false*/)
+{
+    std::string tab = Qtab.toStdString();
+    std::string message = Qmessage.toStdString();
+
+    if(tab == "main"){
+
+        string displaymsg = "server: " + message + "\n";
+        ui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
+        ui->plainTextEdit->moveCursor (QTextCursor::End);
+    }
+    else{
+        QWidget* tabToDisplay = channelMap[tab];
+        //come back here after you find the object names.
+        QPlainTextEdit* box = tabToDisplay->findChild<QPlainTextEdit*>(QString::fromStdString(tab + "_text"));
+        string displaymsg = message + "\n";
+        ui->plainTextEdit->moveCursor (QTextCursor::End);
+        box->insertPlainText(QString::fromStdString(displaymsg));
+
+        //if we want to switch to this tab, do so.
+        if(focus)
+            ui->tabWidget->setCurrentWidget(tabToDisplay);
+
+    }
 }
 
 void MainWindow::receive(Ui::MainWindow *myui)
@@ -80,14 +109,14 @@ void MainWindow::receive(Ui::MainWindow *myui)
                         {
                             //add new channel for incoming message.
                             //can block messages server side.
-                            displayMessage("New message from: " + msg.name + " to " + msg.params[0] + ". PRIVMSG back to create new tab.\n", myui);
-                            displayMessage(msg.params[1], myui);
+                            worker->display(QString::fromStdString("New message from: " + msg.name + " to " + msg.params[0] + ". PRIVMSG back to create new tab.\n"), QString("main"), false);
+                            worker->display(QString::fromStdString(msg.params[1]), QString("main"), false);
                             //addNewChannel(msg.params[0]);
                         }
                         else
                         {
                             //display
-                            displayMessage(msg.name + ": " + msg.params[1], myui, msg.params[0], false);
+                            worker->display(QString::fromStdString(msg.name + ": " + msg.params[1]), QString::fromStdString(msg.params[0]), false);
                         }
                     }
                     else
@@ -97,14 +126,14 @@ void MainWindow::receive(Ui::MainWindow *myui)
                         {
                             //add new channel for incoming message.
                             //can block messages server side.
-                            displayMessage("New message from: " + msg.name + ". PRIVMSG back to create new tab.\n", myui);
-                            displayMessage(msg.params[1], myui);
+                            worker->display(QString::fromStdString("New message from: " + msg.name + ". PRIVMSG back to create new tab.\n"), QString("main"), false);
+                            worker->display(QString::fromStdString(msg.params[1]), QString("main"), false);
                             //addNewChannel(msg.params[0]);
                         }
                         else
                         {
                             //display
-                            displayMessage(msg.name + ": " + msg.params[1], myui, msg.name, false);
+                            worker->display(QString::fromStdString(msg.name + ": " + msg.params[1]), QString::fromStdString(msg.name), false);
                         }
                     }
                 }
@@ -117,7 +146,7 @@ void MainWindow::receive(Ui::MainWindow *myui)
             }
             else
             {
-                displayMessage(rcvmsg, myui);
+                worker->display(QString::fromStdString(rcvmsg), QString("main"), false);
             }
             rcvmsg.erase();
         }
@@ -246,7 +275,12 @@ void MainWindow::on_connect_clicked()
         continueReceiveing = true;
         //rcvThread = make_unique<std::thread>(&MainWindow::test, ui);
         //QFuture<void> future = QtConcurrent::run(aFunction)
+        //qRegisterMetaType<std::string>();
+        //qRegisterMetaType<bool>();
         future = QtConcurrent::run(this, &MainWindow::receive, ui);
+        displayWorker* displayer = new displayWorker;
+        connect(displayer, SIGNAL(requestDisplay(QString, QString, bool)), this, SLOT(displayMessageSlot(QString, QString, bool)));
+        worker = displayer;
         client.connected = true;
     }
 }
