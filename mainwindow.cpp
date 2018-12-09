@@ -148,7 +148,35 @@ void MainWindow::receive(Ui::MainWindow *myui)
                         }
                     }
                 }
-            } else if(msg.command == "QUIT")
+            }
+            else if(msg.command == "NOTICE")
+            {
+                if(msg.name != client.username)
+                {
+                    if(msg.params[0][0] == '#')
+                    {
+                        if(channelMap.find(msg.params[0]) == channelMap.end())
+                        {
+                            //add new channel for incoming message.
+                            //can block messages server side.
+                            worker->display(QString::fromStdString("Notice from: " + msg.name + " to " + msg.params[0] + ".\n"), QString("main"), false);
+                            worker->display(QString::fromStdString(msg.params[1]), QString("main"), false);
+                            //addNewChannel(msg.params[0]);
+                        }
+                        else
+                        {
+                            //display
+                            worker->display(QString::fromStdString("Notice from " + msg.name + ": " + msg.params[1]), QString::fromStdString(msg.params[0]), false);
+                        }
+                    }
+                    else
+                    {
+                        worker->display(QString::fromStdString("Notice from: " + msg.name + ".\n"), QString("main"), false);
+                        worker->display(QString::fromStdString(msg.params[1]), QString("main"), false);
+                    }
+                }
+            }
+            else if(msg.command == "QUIT")
             {
                 continueReceiveing = false;
                 client.connected = false;
