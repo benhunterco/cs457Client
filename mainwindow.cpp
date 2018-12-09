@@ -199,6 +199,21 @@ void MainWindow::receive(Ui::MainWindow *myui)
             {
                 worker->display(QString::fromStdString(msg.params[0]), QString("main"), false);
             }
+            else if(msg.command == "KNOCK")
+            {
+                if(msg.name == client.username)
+                {
+                    //knock came back. either we don't need to knock or can't knock
+                }
+                else
+                {
+                    std::string notification = "User " + msg.name + " would like to join " + msg.params[0] + ".";
+                    if(msg.params.size() > 1)
+                        notification += "\nThey gave the message:\n\t" + msg.params[1];
+                    notification += "\nIf you would like to invite them, use /INVITE " + msg.name + " " + msg.params[0];
+                    worker->display(QString::fromStdString(notification), QString("main"), false);
+                }
+            }
             else
             {
                 worker->display(QString::fromStdString(rcvmsg), QString("main"), false);
