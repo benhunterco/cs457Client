@@ -24,6 +24,11 @@ MainWindow::MainWindow(QWidget *parent, string serverIP, uint port) :
     //delete second tab. Couldn't remove it in the form...
     ui->tabWidget->removeTab(1);
 
+    //create our displayworker object. Allows gui manipulation in secondary threads.
+    displayWorker* displayer = new displayWorker;
+    connect(displayer, SIGNAL(requestDisplay(QString, QString, bool)), this, SLOT(displayMessageSlot(QString, QString, bool)));
+    worker = displayer;
+
 }
 
 MainWindow::~MainWindow()
@@ -278,9 +283,6 @@ void MainWindow::on_connect_clicked()
         //qRegisterMetaType<std::string>();
         //qRegisterMetaType<bool>();
         future = QtConcurrent::run(this, &MainWindow::receive, ui);
-        displayWorker* displayer = new displayWorker;
-        connect(displayer, SIGNAL(requestDisplay(QString, QString, bool)), this, SLOT(displayMessageSlot(QString, QString, bool)));
-        worker = displayer;
         client.connected = true;
     }
 }
