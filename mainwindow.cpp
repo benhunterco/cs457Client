@@ -1,10 +1,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "tcpClientSocket.h"
+#include "displayworker.h"
 #include <iostream>
 #include <string>
 #include <thread>
 #include <chrono>
+
 
 
 using namespace std;
@@ -22,6 +24,16 @@ MainWindow::MainWindow(QWidget *parent, string serverIP, uint port) :
     //delete second tab. Couldn't remove it in the form...
     ui->tabWidget->removeTab(1);
 
+    //create our displayworker object. Allows gui manipulation in secondary threads.
+    displayWorker* displayer = new displayWorker;
+    connect(displayer, SIGNAL(requestDisplay(QString, QString, bool)), this, SLOT(displayMessageSlot(QString, QString, bool)));
+    connect(displayer, SIGNAL(requestFailure(QString)), this, SLOT(connectionFailedSlot(QString)));
+    connect(displayer, SIGNAL(requestStatusUpdate(QString)), this, SLOT(updateStatusSlot(QString)));
+    worker = displayer;
+
+    //add status bar, tell if you're connected or not.
+    ui->statusBar->showMessage(tr("Disconnected"));
+
 }
 
 MainWindow::~MainWindow()
@@ -37,6 +49,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::displayMessage(string msg, Ui::MainWindow *myui, string tab /*= "main*/, bool focus /*=false*/)
 {
+    cout << "here" << endl;
     if(tab == "main"){
 
         string displaymsg = "server: " + msg + "\n";
@@ -47,7 +60,7 @@ void MainWindow::displayMessage(string msg, Ui::MainWindow *myui, string tab /*=
         //come back here after you find the object names.
         QPlainTextEdit* box = tabToDisplay->findChild<QPlainTextEdit*>(QString::fromStdString(tab + "_text"));
         string displaymsg = msg + "\n";
-        ui->plainTextEdit->moveCursor (QTextCursor::End);
+        myui->plainTextEdit->moveCursor (QTextCursor::End);
         box->insertPlainText(QString::fromStdString(displaymsg));
 
         //if we want to switch to this tab, do so.
@@ -55,7 +68,34 @@ void MainWindow::displayMessage(string msg, Ui::MainWindow *myui, string tab /*=
             myui->tabWidget->setCurrentWidget(tabToDisplay);
 
     }
+    cout << "tohere" << endl;
 
+}
+
+void MainWindow::displayMessageSlot(QString Qmessage, QString Qtab, bool focus /* = false*/)
+{
+    std::string tab = Qtab.toStdString();
+    std::string message = Qmessage.toStdString();
+
+    if(tab == "main"){
+
+        string displaymsg = "server: " + message + "\n";
+        ui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
+        ui->plainTextEdit->moveCursor (QTextCursor::End);
+    }
+    else{
+        QWidget* tabToDisplay = channelMap[tab];
+        //come back here after you find the object names.
+        QPlainTextEdit* box = tabToDisplay->findChild<QPlainTextEdit*>(QString::fromStdString(tab + "_text"));
+        string displaymsg = message + "\n";
+        ui->plainTextEdit->moveCursor (QTextCursor::End);
+        box->insertPlainText(QString::fromStdString(displaymsg));
+
+        //if we want to switch to this tab, do so.
+        if(focus)
+            ui->tabWidget->setCurrentWidget(tabToDisplay);
+
+    }
 }
 
 void MainWindow::receive(Ui::MainWindow *myui)
@@ -79,14 +119,14 @@ void MainWindow::receive(Ui::MainWindow *myui)
                         {
                             //add new channel for incoming message.
                             //can block messages server side.
-                            displayMessage("New message from: " + msg.name + " to " + msg.params[0] + ". PRIVMSG back to create new tab.\n", myui);
-                            displayMessage(msg.params[1], myui);
+                            worker->display(QString::fromStdString("New message from: " + msg.name + " to " + msg.params[0] + ". PRIVMSG back to create new tab.\n"), QString("main"), false);
+                            worker->display(QString::fromStdString(msg.params[1]), QString("main"), false);
                             //addNewChannel(msg.params[0]);
                         }
                         else
                         {
                             //display
-                            displayMessage(msg.name + ": " + msg.params[1], myui, msg.params[0], false);
+                            worker->display(QString::fromStdString(msg.name + ": " + msg.params[1]), QString::fromStdString(msg.params[0]), false);
                         }
                     }
                     else
@@ -96,21 +136,28 @@ void MainWindow::receive(Ui::MainWindow *myui)
                         {
                             //add new channel for incoming message.
                             //can block messages server side.
-                            displayMessage("New message from: " + msg.name + ". PRIVMSG back to create new tab.\n", myui);
-                            displayMessage(msg.params[1], myui);
+                            worker->display(QString::fromStdString("New message from: " + msg.name + ". PRIVMSG back to create new tab.\n"), QString("main"), false);
+                            worker->display(QString::fromStdString(msg.params[1]), QString("main"), false);
                             //addNewChannel(msg.params[0]);
                         }
                         else
                         {
                             //display
-                            displayMessage(msg.name + ": " + msg.params[1], myui, msg.name, false);
+                            worker->display(QString::fromStdString(msg.name + ": " + msg.params[1]), QString::fromStdString(msg.name), false);
                         }
                     }
                 }
+            } else if(msg.command == "QUIT")
+            {
+                continueReceiveing = false;
+                client.connected = false;
+                client.sock->closeSocket();
+                //show disconnect message?
+                worker->status(QString("Disconnected (quit)"));
             }
             else
             {
-                displayMessage(rcvmsg, myui);
+                worker->display(QString::fromStdString(rcvmsg), QString("main"), false);
             }
             rcvmsg.erase();
         }
@@ -118,6 +165,12 @@ void MainWindow::receive(Ui::MainWindow *myui)
         {
             cout << "Read from empty socket";
             continueReceiveing = false;
+            client.connected = false;
+            //show some sort of message?
+            //connectionFailed("Connection to remote host lost");
+            worker->failure(QString("Connection to remote host lost"));
+            worker->status(QString("Disconnected (connection lost)"));
+
         }
     }
 }
@@ -128,78 +181,81 @@ void MainWindow::on_messageInput_returnPressed()
 }
 void MainWindow::on_send_clicked()
 {
-    //change the qstring to string
-    string command = ui->messageInput->text().toStdString();
-    ui->plainTextEdit->moveCursor (QTextCursor::End);
-
-    //show it, for testing. later show your message when you privmsg
-    if(debug)
+    if(client.connected)
     {
-        string displaymsg = "user: " + command + "\n";
-        ui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
-    }
-    //clientSocket.sendString(sendmsg + "\r\n",false);
+        //change the qstring to string
+        string command = ui->messageInput->text().toStdString();
+        ui->plainTextEdit->moveCursor (QTextCursor::End);
 
-    //now do what command used to do.
-    if(command[0] == '/')
-    {
-        command = command.substr(1, command.length() - 1);
-        Parsing::IRC_message msg(command + "\r\n");
-        if (msg.command == "HELP")
+        //show it, for testing. later show your message when you privmsg
+        if(debug)
         {
-            displayMessage("A helpful message", ui);
+            string displaymsg = "user: " + command + "\n";
+            ui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
         }
-        else if (msg.command == "QUIT")
-        {
-            client.send(command);
-            continueReceiveing = false;
-            client.sock->closeSocket();
-        }
-        else if (msg.command == "PRIVMSG")
-        {
-            //send out what you said. lets deal with dmfisrt
+        //clientSocket.sendString(sendmsg + "\r\n",false);
 
-            if(channelMap.find(msg.params[0]) == channelMap.end())
+        //now do what command used to do.
+        if(command[0] == '/')
+        {
+            command = command.substr(1, command.length() - 1);
+            Parsing::IRC_message msg(command + "\r\n");
+            if (msg.command == "HELP")
             {
-                addNewChannel(msg.params[0]);
+                displayMessage("A helpful message", ui);
             }
-            displayMessage(client.username + ": " + msg.params[1] + "\n", ui, msg.params[0], true);
-            client.send(command);
+            else if (msg.command == "QUIT")
+            {
+                client.send(command);
+                continueReceiveing = false;
+                //client.sock->closeSocket();
+            }
+            else if (msg.command == "PRIVMSG")
+            {
+                //send out what you said. lets deal with dmfisrt
 
-        }
-        else if (msg.command == "JOIN")
-        {
-            if(channelMap.find(msg.params[0]) == channelMap.end())
-            {
-                addNewChannel(msg.params[0]);
+                if(channelMap.find(msg.params[0]) == channelMap.end())
+                {
+                    addNewChannel(msg.params[0]);
+                }
+                displayMessage(client.username + ": " + msg.params[1] + "\n", ui, msg.params[0], true);
+                client.send(command);
+
             }
-            client.send(command);
-        }
-        else if (msg.command == "PART")
-        {
-            if(channelMap.find(msg.params[0]) != channelMap.end())
+            else if (msg.command == "JOIN")
             {
-                //get the channel
-                QWidget * tab = channelMap[msg.params[0]];
-                int toDelete = ui->tabWidget->indexOf(tab);
-                slotCloseTab(toDelete);
+                if(channelMap.find(msg.params[0]) == channelMap.end())
+                {
+                    addNewChannel(msg.params[0]);
+                }
+                client.send(command);
             }
-            client.send(command);
+            else if (msg.command == "PART")
+            {
+                if(channelMap.find(msg.params[0]) != channelMap.end())
+                {
+                    //get the channel
+                    QWidget * tab = channelMap[msg.params[0]];
+                    int toDelete = ui->tabWidget->indexOf(tab);
+                    slotCloseTab(toDelete);
+                }
+                client.send(command);
+            }
+            else
+            {
+                client.send(command);
+            }
         }
         else
         {
-            client.send(command);
-        }
-    }
-    else
-    {
-        //send to active window
-        //first get name of active recipient
-        string recipient = ui->tabWidget->currentWidget()->objectName().toStdString();
-        if(recipient != "tab")
-        {
-            client.send("PRIVMSG " + recipient + " :" + command);
-            displayMessage(client.username + ": " + command + "\n", ui, recipient, true);
+            //send to active window
+            //first get name of active recipient
+            string recipient = ui->tabWidget->currentWidget()->objectName().toStdString();
+            if(recipient != "tab")
+            {
+                client.send("PRIVMSG " + recipient + " :" + command);
+                displayMessage(client.username + ": " + command + "\n", ui, recipient, true);
+            }
         }
     }
 
@@ -218,9 +274,11 @@ void MainWindow::on_connect_clicked()
     client.sock->init();
     client.sock->setSocketOptions();
     int val = clientSocket.connectSocket();
-    if (val > 0)
+    if (val != 0)
     {
         cout << "error creating socket" << endl;
+        //connectionFailed();
+        worker->failure(QString("Failed to connect to remote host."));
     }
     else
     {
@@ -228,13 +286,15 @@ void MainWindow::on_connect_clicked()
         //string = get registration?
         string registration = ":" + client.username + " PASS " + client.password + "\r\n";
         client.sock->sendString(registration, false);
+        continueReceiveing = true;
+        //rcvThread = make_unique<std::thread>(&MainWindow::test, ui);
+        //QFuture<void> future = QtConcurrent::run(aFunction)
+        //qRegisterMetaType<std::string>();
+        //qRegisterMetaType<bool>();
+        future = QtConcurrent::run(this, &MainWindow::receive, ui);
+        client.connected = true;
+        worker->status(QString("Connected"));
     }
-
-    continueReceiveing = true;
-    //rcvThread = make_unique<std::thread>(&MainWindow::test, ui);
-    //QFuture<void> future = QtConcurrent::run(aFunction)
-    future = QtConcurrent::run(this, &MainWindow::receive, ui);
-
 }
 
 void MainWindow::addNewChannel(string newChannelName)
@@ -300,6 +360,26 @@ void MainWindow::on_credentials_clicked()
             client.password = ui->password->text().toStdString();
         //otherwise it remains as @
     }
+}
+
+void MainWindow::connectionFailed(std::string msg)
+{
+    QMessageBox msgBox(ui->centralWidget);
+    msgBox.setText(QString::fromStdString(msg));
+    msgBox.exec();
+
+}
+
+void MainWindow::connectionFailedSlot(QString Qmsg)
+{
+    QMessageBox msgBox(ui->centralWidget);
+    msgBox.setText(Qmsg);
+    msgBox.exec();
+}
+
+void MainWindow::updateStatusSlot(QString status)
+{
+    ui->statusBar->showMessage(status);
 }
 
 

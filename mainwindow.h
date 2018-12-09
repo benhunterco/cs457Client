@@ -6,10 +6,12 @@
 #include "QtConcurrent/qtconcurrentrun.h"
 #include "client.h"
 #include "Parsing.h"
+#include "displayworker.h"
 #include <iostream>
 #include <string>
 #include <thread>
 #include <map>
+#include <QMessageBox>
 
 using namespace std;
 
@@ -42,6 +44,13 @@ private slots:
 
     void on_password_returnPressed();
 
+    void displayMessageSlot(QString message, QString tab, bool focus = false);
+
+
+    void connectionFailedSlot(QString Qmsg);
+
+    void updateStatusSlot(QString status);
+
 private:
     Ui::MainWindow *ui;
     cs457::tcpClientSocket clientSocket;
@@ -54,6 +63,10 @@ private:
     cs457::client client;
     map<string, QWidget*> channelMap;
     bool debug = false;
+
+    void connectionFailed(std::string msg = "Connection failed");
+
+    displayWorker* worker;
 
 };
 
