@@ -7,6 +7,7 @@
 #include <chrono>
 
 
+
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent, string serverIP, uint port) :
@@ -126,6 +127,8 @@ void MainWindow::receive(Ui::MainWindow *myui)
             continueReceiveing = false;
             client.connected = false;
             //show some sort of message?
+            connectionFailed("Connection to remote host lost");
+
         }
     }
 }
@@ -232,6 +235,7 @@ void MainWindow::on_connect_clicked()
     if (val != 0)
     {
         cout << "error creating socket" << endl;
+        connectionFailed();
     }
     else
     {
@@ -310,6 +314,14 @@ void MainWindow::on_credentials_clicked()
             client.password = ui->password->text().toStdString();
         //otherwise it remains as @
     }
+}
+
+void MainWindow::connectionFailed(std::string msg)
+{
+    QMessageBox msgBox(ui->centralWidget);
+    msgBox.setText(QString::fromStdString(msg));
+    msgBox.exec();
+
 }
 
 

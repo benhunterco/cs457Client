@@ -10,6 +10,7 @@
 #include <string>
 #include <thread>
 #include <map>
+#include <QMessageBox>
 
 using namespace std;
 
@@ -54,6 +55,8 @@ private:
     cs457::client client;
     map<string, QWidget*> channelMap;
     bool debug = false;
+
+    void connectionFailed(std::string msg = "Connection failed");
 
 };
 
