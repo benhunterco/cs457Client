@@ -231,6 +231,10 @@ void MainWindow::receive(Ui::MainWindow *myui)
                 }
 
             }
+            else if (msg.command == "INVITE")
+            {
+                worker->display(QString::fromStdString(msg.name + " Has invited you to join channel " + msg.params[1] + "."), QString("main"), false);
+            }
             else
             {
                 worker->display(QString::fromStdString(rcvmsg), QString("main"), false);
