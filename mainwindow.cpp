@@ -219,6 +219,18 @@ void MainWindow::receive(Ui::MainWindow *myui)
                 //clost spare window?
                 worker->display(QString::fromStdString(msg.params[0]), QString("main"), false);
             }
+            else if (msg.command == "TOPIC")
+            {
+                if(channelMap.find(msg.params[0]) != channelMap.end())
+                {
+                     worker->display(QString::fromStdString("Topic is: " + msg.params[1]), QString::fromStdString(msg.params[0]), false);
+                }
+                else
+                {
+                     worker->display(QString::fromStdString("Topic for " + msg.params[0] + " is " + msg.params[1]), QString("main"), false);
+                }
+
+            }
             else
             {
                 worker->display(QString::fromStdString(rcvmsg), QString("main"), false);
@@ -316,6 +328,29 @@ void MainWindow::on_send_clicked()
             {
                 worker->display(QString("Client version 2.0"), QString("main"), false);
                 client.send(command);
+            }
+            else if (msg.command == "TOPIC")
+            {
+                //if not in main tab
+                if(ui->tabWidget->currentIndex() > 0){
+                    if (msg.params.size() == 0)
+                    {
+                        //create command to just get the channel name
+                        std::string toSend = "TOPIC " + ui->tabWidget->currentWidget()->objectName().toStdString();
+                        client.send(toSend);
+
+                    }
+                    else if (msg.params.size() > 0)
+                    {
+                        cout << msg.params[0] << endl;
+                        std::string toSend = "TOPIC " + ui->tabWidget->currentWidget()->objectName().toStdString() + " :" + msg.params[0];
+                        client.send(toSend);
+                    }
+                }
+                else
+                {
+                    client.send(command);
+                }
             }
             else
             {
