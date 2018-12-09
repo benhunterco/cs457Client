@@ -46,6 +46,9 @@ private slots:
 
     void displayMessageSlot(QString message, QString tab, bool focus = false);
 
+
+    void connectionFailedSlot(QString Qmsg);
+
 private:
     Ui::MainWindow *ui;
     cs457::tcpClientSocket clientSocket;

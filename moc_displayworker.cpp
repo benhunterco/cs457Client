@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_displayWorker_t {
-    QByteArrayData data[6];
-    char stringdata0[48];
+    QByteArrayData data[7];
+    char stringdata0[63];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -36,11 +36,12 @@ QT_MOC_LITERAL(1, 14, 14), // "requestDisplay"
 QT_MOC_LITERAL(2, 29, 0), // ""
 QT_MOC_LITERAL(3, 30, 7), // "message"
 QT_MOC_LITERAL(4, 38, 3), // "tab"
-QT_MOC_LITERAL(5, 42, 5) // "focus"
+QT_MOC_LITERAL(5, 42, 5), // "focus"
+QT_MOC_LITERAL(6, 48, 14) // "requestFailure"
 
     },
     "displayWorker\0requestDisplay\0\0message\0"
-    "tab\0focus"
+    "tab\0focus\0requestFailure"
 };
 #undef QT_MOC_LITERAL
 
@@ -50,18 +51,20 @@ static const uint qt_meta_data_displayWorker[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       1,   14, // methods
+       2,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       1,       // signalCount
+       2,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    3,   19,    2, 0x06 /* Public */,
+       1,    3,   24,    2, 0x06 /* Public */,
+       6,    1,   31,    2, 0x06 /* Public */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QString, QMetaType::QString, QMetaType::Bool,    3,    4,    5,
+    QMetaType::Void, QMetaType::QString,    3,
 
        0        // eod
 };
@@ -73,6 +76,7 @@ void displayWorker::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->requestDisplay((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2])),(*reinterpret_cast< bool(*)>(_a[3]))); break;
+        case 1: _t->requestFailure((*reinterpret_cast< QString(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -81,6 +85,13 @@ void displayWorker::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
             typedef void (displayWorker::*_t)(QString , QString , bool );
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&displayWorker::requestDisplay)) {
                 *result = 0;
+                return;
+            }
+        }
+        {
+            typedef void (displayWorker::*_t)(QString );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&displayWorker::requestFailure)) {
+                *result = 1;
                 return;
             }
         }
@@ -112,13 +123,13 @@ int displayWorker::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 1)
+        if (_id < 2)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 1;
+        _id -= 2;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 1)
+        if (_id < 2)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 1;
+        _id -= 2;
     }
     return _id;
 }
@@ -128,6 +139,13 @@ void displayWorker::requestDisplay(QString _t1, QString _t2, bool _t3)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
+}
+
+// SIGNAL 1
+void displayWorker::requestFailure(QString _t1)
+{
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE

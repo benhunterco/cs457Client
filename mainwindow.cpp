@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent, string serverIP, uint port) :
     //create our displayworker object. Allows gui manipulation in secondary threads.
     displayWorker* displayer = new displayWorker;
     connect(displayer, SIGNAL(requestDisplay(QString, QString, bool)), this, SLOT(displayMessageSlot(QString, QString, bool)));
+    connect(displayer, SIGNAL(requestFailure(QString)), this, SLOT(connectionFailedSlot(QString)));
     worker = displayer;
 
 }
@@ -161,7 +162,8 @@ void MainWindow::receive(Ui::MainWindow *myui)
             continueReceiveing = false;
             client.connected = false;
             //show some sort of message?
-            connectionFailed("Connection to remote host lost");
+            //connectionFailed("Connection to remote host lost");
+            worker->failure(QString("Connection to remote host lost"));
 
         }
     }
@@ -269,7 +271,8 @@ void MainWindow::on_connect_clicked()
     if (val != 0)
     {
         cout << "error creating socket" << endl;
-        connectionFailed();
+        //connectionFailed();
+        worker->failure(QString("Failed to connect to remote host."));
     }
     else
     {
@@ -358,6 +361,13 @@ void MainWindow::connectionFailed(std::string msg)
     msgBox.setText(QString::fromStdString(msg));
     msgBox.exec();
 
+}
+
+void MainWindow::connectionFailedSlot(QString Qmsg)
+{
+    QMessageBox msgBox(ui->centralWidget);
+    msgBox.setText(Qmsg);
+    msgBox.exec();
 }
 
 

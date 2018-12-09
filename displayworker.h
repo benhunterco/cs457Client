@@ -9,9 +9,11 @@ class displayWorker : public QObject {
 public:
     explicit displayWorker(QObject *parent = 0) : QObject(parent) {}
     void display(QString message, QString tab, bool focus) { emit requestDisplay(message, tab, focus);}
+    void failure(QString message) { emit requestFailure(message);}
 
 signals:
     void requestDisplay(QString message, QString tab, bool focus);
+    void requestFailure(QString message);
 };
 
 #endif // DISPLAYWORKER_H
