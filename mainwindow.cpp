@@ -214,6 +214,11 @@ void MainWindow::receive(Ui::MainWindow *myui)
                     worker->display(QString::fromStdString(notification), QString("main"), false);
                 }
             }
+            else if (msg.command == "JOIN")
+            {
+                //clost spare window?
+                worker->display(QString::fromStdString(msg.params[0]), QString("main"), false);
+            }
             else
             {
                 worker->display(QString::fromStdString(rcvmsg), QString("main"), false);
