@@ -55,8 +55,9 @@ void MainWindow::displayMessage(string msg, Ui::MainWindow *myui, string tab /*=
         cout << "begin display" << endl;
     if(tab == "main"){
 
-        string displaymsg = "server: " + msg + "\n";
+        string displaymsg = msg + "\n";
         myui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
+        myui->plainTextEdit->moveCursor (QTextCursor::End);
     }
     else{
         QWidget* tabToDisplay = channelMap[tab];
@@ -79,11 +80,11 @@ void MainWindow::displayMessage(string msg, Ui::MainWindow *myui, string tab /*=
 void MainWindow::displayMessageSlot(QString Qmessage, QString Qtab, bool focus /* = false*/)
 {
     std::string tab = Qtab.toStdString();
-    std::string message = Qmessage.toStdString();
+    std::string message = Qmessage.toStdString() + "\n";
 
     if(tab == "main"){
 
-        string displaymsg = "server: " + message + "\n";
+        string displaymsg =  message;
         ui->plainTextEdit->insertPlainText (QString::fromStdString(displaymsg));
         ui->plainTextEdit->moveCursor (QTextCursor::End);
     }
@@ -91,7 +92,7 @@ void MainWindow::displayMessageSlot(QString Qmessage, QString Qtab, bool focus /
         QWidget* tabToDisplay = channelMap[tab];
         //come back here after you find the object names.
         QPlainTextEdit* box = tabToDisplay->findChild<QPlainTextEdit*>(QString::fromStdString(tab + "_text"));
-        string displaymsg = message + "\n";
+        string displaymsg = message;
         ui->plainTextEdit->moveCursor (QTextCursor::End);
         box->insertPlainText(QString::fromStdString(displaymsg));
 
@@ -125,7 +126,7 @@ void MainWindow::receive()
                             //add new channel for incoming message.
                             //can block messages server side.
                             worker->display(QString::fromStdString("New message from: " + msg.name + " to " + msg.params[0] + ". PRIVMSG back to create new tab.\n"), QString("main"), false);
-                            worker->display(QString::fromStdString(msg.params[1]), QString("main"), false);
+                            worker->display(QString::fromStdString(msg.name + ": " + msg.params[1]), QString("main"), false);
                             //addNewChannel(msg.params[0]);
                         }
                         else
@@ -142,7 +143,7 @@ void MainWindow::receive()
                             //add new channel for incoming message.
                             //can block messages server side.
                             worker->display(QString::fromStdString("New message from: " + msg.name + ". PRIVMSG back to create new tab.\n"), QString("main"), false);
-                            worker->display(QString::fromStdString(msg.params[1]), QString("main"), false);
+                            worker->display(QString::fromStdString(msg.name + ": " + msg.params[1]), QString("main"), false);
                             //addNewChannel(msg.params[0]);
                         }
                         else
@@ -163,7 +164,7 @@ void MainWindow::receive()
                         {
                             //add new channel for incoming message.
                             //can block messages server side.
-                            worker->display(QString::fromStdString("Notice from: " + msg.name + " to " + msg.params[0] + ".\n"), QString("main"), false);
+                            worker->display(QString::fromStdString("Notice from: " + msg.name + " to " + msg.params[0]), QString("main"), false);
                             worker->display(QString::fromStdString(msg.params[1]), QString("main"), false);
                             //addNewChannel(msg.params[0]);
                         }
@@ -175,7 +176,7 @@ void MainWindow::receive()
                     }
                     else
                     {
-                        worker->display(QString::fromStdString("Notice from: " + msg.name + ".\n"), QString("main"), false);
+                        worker->display(QString::fromStdString("Notice from: " + msg.name), QString("main"), false);
                         worker->display(QString::fromStdString(msg.params[1]), QString("main"), false);
                     }
                 }
@@ -327,7 +328,7 @@ void MainWindow::on_send_clicked()
                                       + "To see the created channels, type '/LIST'\n"
                                       + "To send a message to a channel, type '/PRIVMSG <#channelName> :<your message here>'\n"
                                       + "A more thorough explanation can be found in the readme file.\n"
-                                      + "************************************************************************************\n";
+                                      + "************************************************************************************";
                 displayMessage(helpMessage, ui);
             }
             else if (msg.command == "QUIT")
@@ -344,7 +345,7 @@ void MainWindow::on_send_clicked()
                 {
                     addNewChannel(msg.params[0]);
                 }
-                displayMessage(client.username + ": " + msg.params[1] + "\n", ui, msg.params[0], true);
+                displayMessage(client.username + ": " + msg.params[1], ui, msg.params[0], true);
                 client.send(command);
 
             }
@@ -415,7 +416,7 @@ void MainWindow::on_send_clicked()
             if(recipient != "tab")
             {
                 client.send("PRIVMSG " + recipient + " :" + command);
-                displayMessage(client.username + ": " + command + "\n", ui, recipient, true);
+                displayMessage(client.username + ": " + command, ui, recipient, true);
             }
         }
     }
@@ -529,7 +530,8 @@ void MainWindow::on_credentials_clicked()
 {
     if(!ui->username->text().isEmpty())
     {
-        cout << "set credentials" << endl;
+        if(debug)
+            cout << "set credentials" << endl;
         client.username = ui->username->text().toStdString();
         if(!ui->password->text().isEmpty())
             client.password = ui->password->text().toStdString();
