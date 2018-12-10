@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[18];
-    char stringdata0[254];
+    QByteArrayData data[20];
+    char stringdata0[281];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -48,7 +48,9 @@ QT_MOC_LITERAL(13, 197, 4), // "Qmsg"
 QT_MOC_LITERAL(14, 202, 16), // "updateStatusSlot"
 QT_MOC_LITERAL(15, 219, 6), // "status"
 QT_MOC_LITERAL(16, 226, 18), // "updateUsernameSlot"
-QT_MOC_LITERAL(17, 245, 8) // "username"
+QT_MOC_LITERAL(17, 245, 8), // "username"
+QT_MOC_LITERAL(18, 254, 18), // "closeTabByNameSlot"
+QT_MOC_LITERAL(19, 273, 7) // "tabName"
 
     },
     "MainWindow\0on_send_clicked\0\0"
@@ -57,7 +59,8 @@ QT_MOC_LITERAL(17, 245, 8) // "username"
     "on_credentials_clicked\0on_password_returnPressed\0"
     "displayMessageSlot\0message\0tab\0focus\0"
     "connectionFailedSlot\0Qmsg\0updateStatusSlot\0"
-    "status\0updateUsernameSlot\0username"
+    "status\0updateUsernameSlot\0username\0"
+    "closeTabByNameSlot\0tabName"
 };
 #undef QT_MOC_LITERAL
 
@@ -67,7 +70,7 @@ static const uint qt_meta_data_MainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      11,   14, // methods
+      12,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -75,17 +78,18 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   69,    2, 0x08 /* Private */,
-       3,    0,   70,    2, 0x08 /* Private */,
-       4,    1,   71,    2, 0x08 /* Private */,
-       5,    0,   74,    2, 0x08 /* Private */,
-       6,    0,   75,    2, 0x08 /* Private */,
-       7,    0,   76,    2, 0x08 /* Private */,
-       8,    3,   77,    2, 0x08 /* Private */,
-       8,    2,   84,    2, 0x28 /* Private | MethodCloned */,
-      12,    1,   89,    2, 0x08 /* Private */,
-      14,    1,   92,    2, 0x08 /* Private */,
-      16,    1,   95,    2, 0x08 /* Private */,
+       1,    0,   74,    2, 0x08 /* Private */,
+       3,    0,   75,    2, 0x08 /* Private */,
+       4,    1,   76,    2, 0x08 /* Private */,
+       5,    0,   79,    2, 0x08 /* Private */,
+       6,    0,   80,    2, 0x08 /* Private */,
+       7,    0,   81,    2, 0x08 /* Private */,
+       8,    3,   82,    2, 0x08 /* Private */,
+       8,    2,   89,    2, 0x28 /* Private | MethodCloned */,
+      12,    1,   94,    2, 0x08 /* Private */,
+      14,    1,   97,    2, 0x08 /* Private */,
+      16,    1,  100,    2, 0x08 /* Private */,
+      18,    1,  103,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -99,6 +103,7 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void, QMetaType::QString,   13,
     QMetaType::Void, QMetaType::QString,   15,
     QMetaType::Void, QMetaType::QString,   17,
+    QMetaType::Void, QMetaType::QString,   19,
 
        0        // eod
 };
@@ -120,6 +125,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 8: _t->connectionFailedSlot((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 9: _t->updateStatusSlot((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 10: _t->updateUsernameSlot((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 11: _t->closeTabByNameSlot((*reinterpret_cast< QString(*)>(_a[1]))); break;
         default: ;
         }
     }
@@ -150,13 +156,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 11)
+        if (_id < 12)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 11;
+        _id -= 12;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 11)
+        if (_id < 12)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 11;
+        _id -= 12;
     }
     return _id;
 }

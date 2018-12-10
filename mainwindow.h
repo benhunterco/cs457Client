@@ -53,6 +53,8 @@ private slots:
 
     void updateUsernameSlot(QString username);
 
+    void closeTabByNameSlot(QString tabName);
+
 private:
     Ui::MainWindow *ui;
     cs457::tcpClientSocket clientSocket;

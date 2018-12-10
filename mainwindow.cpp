@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent, string serverIP, uint port) :
     connect(displayer, SIGNAL(requestFailure(QString)), this, SLOT(connectionFailedSlot(QString)));
     connect(displayer, SIGNAL(requestStatusUpdate(QString)), this, SLOT(updateStatusSlot(QString)));
     connect(displayer, SIGNAL(requestUsernameUpdate(QString)), this, SLOT(updateUsernameSlot(QString)));
+    connect(displayer, SIGNAL(requestTabCloseByName(QString)), this, SLOT(closeTabByNameSlot(QString)));
     worker = displayer;
 
     //add status bar, tell if you're connected or not.
@@ -218,6 +219,20 @@ void MainWindow::receive(Ui::MainWindow *myui)
             {
                 //clost spare window?
                 worker->display(QString::fromStdString(msg.params[0]), QString("main"), false);
+            }
+            else if (msg.command == "KICK")
+            {
+                worker->closeTab(QString::fromStdString(msg.params[0]));
+                std::string kickMessage = msg.name + " has kicked you from channel: " + msg.params[0] + ".";
+                if(msg.params.size() > 2)
+                {
+                    kickMessage += " Reason: " + msg.params[2];
+                }
+                else
+                {
+                    kickMessage += " No reason given";
+                }
+                worker->display(QString::fromStdString(kickMessage), QString("main"), false);
             }
             else if (msg.command == "TOPIC")
             {
@@ -459,6 +474,20 @@ void MainWindow::slotCloseTab(int index)
     }
 }
 
+void MainWindow::closeTabByNameSlot(QString tabName)
+{
+    if(channelMap.find(tabName.toStdString()) != channelMap.end())
+    {
+        //get the channel
+        QWidget * tab = channelMap[tabName.toStdString()];
+        int toDelete = ui->tabWidget->indexOf(tab);
+        if(toDelete >0)
+        {
+            delete tab;
+            channelMap.erase(tabName.toStdString());
+        }
+    }
+}
 
 void MainWindow::on_password_returnPressed()
 {
