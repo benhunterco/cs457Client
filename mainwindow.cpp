@@ -217,8 +217,10 @@ void MainWindow::receive(Ui::MainWindow *myui)
             }
             else if (msg.command == "JOIN")
             {
-                //clost spare window?
-                worker->display(QString::fromStdString(msg.params[0]), QString("main"), false);
+                //close window
+                worker->closeTab(QString::fromStdString(msg.params[0]));
+                //display message
+                worker->display(QString::fromStdString(msg.params[1]), QString("main"), false);
             }
             else if (msg.command == "KICK")
             {
