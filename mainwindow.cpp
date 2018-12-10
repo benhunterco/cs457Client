@@ -185,6 +185,14 @@ void MainWindow::receive(Ui::MainWindow *myui)
                 //show disconnect message?
                 worker->status(QString("Disconnected (quit)"));
             }
+            else if(msg.command == "KILL")
+            {
+                continueReceiveing = false;
+                client.connected = false;
+                client.sock->closeSocket();
+                worker->status(QString("Disconnected (kicked)"));
+                worker->failure(QString::fromStdString("Connection to remote host lost. You have been kicked by " + msg.name +"."));
+            }
             else if(msg.command == "PING")
             {
                 worker->display(QString::fromStdString("received ping"), QString("main"), false);
