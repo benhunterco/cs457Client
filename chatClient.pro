@@ -27,7 +27,6 @@ CONFIG += c++18
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    chatClient.cpp \
     tcpClientSocket.cpp \
     Parsing.cpp \
     client.cpp
@@ -35,7 +34,6 @@ SOURCES += \
 HEADERS += \
         mainwindow.h \
     tcpClientSocket.h \
-    customtabwidget.h \
     client.h \
     Parsing.h \
     displayworker.h

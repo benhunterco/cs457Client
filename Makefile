@@ -52,14 +52,12 @@ OBJECTS_DIR   = ./
 
 SOURCES       = main.cpp \
 		mainwindow.cpp \
-		chatClient.cpp \
 		tcpClientSocket.cpp \
 		Parsing.cpp \
 		client.cpp moc_mainwindow.cpp \
 		moc_displayworker.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
-		chatClient.o \
 		tcpClientSocket.o \
 		Parsing.o \
 		client.o \
@@ -244,12 +242,10 @@ DIST          = ../../../anaconda3/mkspecs/features/spec_pre.prf \
 		../../../anaconda3/mkspecs/features/lex.prf \
 		chatClient.pro mainwindow.h \
 		tcpClientSocket.h \
-		customtabwidget.h \
 		client.h \
 		Parsing.h \
 		displayworker.h main.cpp \
 		mainwindow.cpp \
-		chatClient.cpp \
 		tcpClientSocket.cpp \
 		Parsing.cpp \
 		client.cpp
@@ -642,8 +638,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../anaconda3/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents mainwindow.h tcpClientSocket.h customtabwidget.h client.h Parsing.h displayworker.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp mainwindow.cpp chatClient.cpp tcpClientSocket.cpp Parsing.cpp client.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents mainwindow.h tcpClientSocket.h client.h Parsing.h displayworker.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp mainwindow.cpp tcpClientSocket.cpp Parsing.cpp client.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents mainwindow.ui $(DISTDIR)/
 
 
@@ -1202,9 +1198,6 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../../anaconda3/include/qt/QtWidgets/qtoolbar.h \
 		../../../anaconda3/include/qt/QtWidgets/QVBoxLayout
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o mainwindow.cpp
-
-chatClient.o: chatClient.cpp tcpClientSocket.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o chatClient.o chatClient.cpp
 
 tcpClientSocket.o: tcpClientSocket.cpp tcpClientSocket.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tcpClientSocket.o tcpClientSocket.cpp
