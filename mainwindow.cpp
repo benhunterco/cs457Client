@@ -315,7 +315,16 @@ void MainWindow::on_send_clicked()
             Parsing::IRC_message msg(command + "\r\n");
             if (msg.command == "HELP")
             {
-                displayMessage("A helpful message", ui);
+                std::string helpMessage = std::string("************************************************************************************\n")
+                                      + "To see list of online users, type '/USERS'\n"
+                                      + "To send a message to a user, type '/PRIVMSG <user> :<your message here>'\n"
+                                      + "To create or join a channel, type '/JOIN <#channelName>'\n"
+                                      + "Be careful to not use /JOIN on an invalid channel name (without leading #)\n"
+                                      + "To see the created channels, type '/LIST'\n"
+                                      + "To send a message to a channel, type '/PRIVMSG <#channelName> :<your message here>'\n"
+                                      + "A more thorough explanation can be found in the readme file.\n"
+                                      + "************************************************************************************\n";
+                displayMessage(helpMessage, ui);
             }
             else if (msg.command == "QUIT")
             {
