@@ -11,7 +11,7 @@
 
 using namespace std;
 
-MainWindow::MainWindow(QWidget *parent, string serverIP, uint port) :
+MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
@@ -100,7 +100,7 @@ void MainWindow::displayMessageSlot(QString Qmessage, QString Qtab, bool focus /
     }
 }
 
-void MainWindow::receive(Ui::MainWindow *myui)
+void MainWindow::receive()
 {
     while(continueReceiveing){
         cout << "Attempting to recv from socket." << endl;
@@ -448,7 +448,7 @@ void MainWindow::on_connect_clicked()
         //QFuture<void> future = QtConcurrent::run(aFunction)
         //qRegisterMetaType<std::string>();
         //qRegisterMetaType<bool>();
-        future = QtConcurrent::run(this, &MainWindow::receive, ui);
+        future = QtConcurrent::run(this, &MainWindow::receive);
         client.connected = true;
         worker->status(QString("Connected"));
     }

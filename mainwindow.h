@@ -25,7 +25,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr, string networkAddress = "127.0.0.1", uint portNumber = 2000);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 //    cs457::tcpClientSocket clientSocket;
 
@@ -61,7 +61,7 @@ private:
     void displayMessage(string message, Ui::MainWindow *myui, string tab = "main", bool focus = false);
     unique_ptr<std::thread> rcvThread;
     QFuture<void> future;
-    void receive(Ui::MainWindow *myui);
+    void receive();
     bool continueReceiveing;
     void addNewChannel(string channelName);
     cs457::client client;
