@@ -29,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent, string serverIP, uint port) :
     connect(displayer, SIGNAL(requestDisplay(QString, QString, bool)), this, SLOT(displayMessageSlot(QString, QString, bool)));
     connect(displayer, SIGNAL(requestFailure(QString)), this, SLOT(connectionFailedSlot(QString)));
     connect(displayer, SIGNAL(requestStatusUpdate(QString)), this, SLOT(updateStatusSlot(QString)));
+    connect(displayer, SIGNAL(requestUsernameUpdate(QString)), this, SLOT(updateUsernameSlot(QString)));
+    connect(displayer, SIGNAL(requestTabCloseByName(QString)), this, SLOT(closeTabByNameSlot(QString)));
     worker = displayer;
 
     //add status bar, tell if you're connected or not.
@@ -147,13 +149,124 @@ void MainWindow::receive(Ui::MainWindow *myui)
                         }
                     }
                 }
-            } else if(msg.command == "QUIT")
+            }
+            else if(msg.command == "NOTICE")
+            {
+                if(msg.name != client.username)
+                {
+                    if(msg.params[0][0] == '#')
+                    {
+                        if(channelMap.find(msg.params[0]) == channelMap.end())
+                        {
+                            //add new channel for incoming message.
+                            //can block messages server side.
+                            worker->display(QString::fromStdString("Notice from: " + msg.name + " to " + msg.params[0] + ".\n"), QString("main"), false);
+                            worker->display(QString::fromStdString(msg.params[1]), QString("main"), false);
+                            //addNewChannel(msg.params[0]);
+                        }
+                        else
+                        {
+                            //display
+                            worker->display(QString::fromStdString("Notice from " + msg.name + ": " + msg.params[1]), QString::fromStdString(msg.params[0]), false);
+                        }
+                    }
+                    else
+                    {
+                        worker->display(QString::fromStdString("Notice from: " + msg.name + ".\n"), QString("main"), false);
+                        worker->display(QString::fromStdString(msg.params[1]), QString("main"), false);
+                    }
+                }
+            }
+            else if(msg.command == "QUIT")
             {
                 continueReceiveing = false;
                 client.connected = false;
                 client.sock->closeSocket();
                 //show disconnect message?
                 worker->status(QString("Disconnected (quit)"));
+            }
+            else if(msg.command == "KILL")
+            {
+                continueReceiveing = false;
+                client.connected = false;
+                client.sock->closeSocket();
+                worker->status(QString("Disconnected (kicked)"));
+                worker->failure(QString::fromStdString("Connection to remote host lost. You have been kicked by " + msg.name +"."));
+            }
+            else if(msg.command == "PING")
+            {
+                worker->display(QString::fromStdString("received ping"), QString("main"), false);
+                client.sock->sendString(":" + client.username + " PONG", false);
+            }
+            else if(msg.command == "NICK")
+            {
+                client.username = msg.params[0];
+                worker->display(QString::fromStdString(msg.params[1]), QString("main"), false);
+                worker->username(QString::fromStdString(client.username));
+            }
+            else if(msg.command == "VERSION")
+            {
+                worker->display(QString::fromStdString(msg.params[0]), QString("main"), false);
+            }
+            else if(msg.command == "KNOCK")
+            {
+                if(msg.name == client.username)
+                {
+                    //knock came back. either we don't need to knock or can't knock
+                }
+                else
+                {
+                    std::string notification = "User " + msg.name + " would like to join " + msg.params[0] + ".";
+                    if(msg.params.size() > 1)
+                        notification += "\nThey gave the message:\n\t" + msg.params[1];
+                    notification += "\nIf you would like to invite them, use /INVITE " + msg.name + " " + msg.params[0];
+                    worker->display(QString::fromStdString(notification), QString("main"), false);
+                }
+            }
+            else if (msg.command == "JOIN")
+            {
+                //close window
+                worker->closeTab(QString::fromStdString(msg.params[0]));
+                //display message
+                worker->display(QString::fromStdString(msg.params[1]), QString("main"), false);
+            }
+            else if (msg.command == "KICK")
+            {
+                worker->closeTab(QString::fromStdString(msg.params[0]));
+                std::string kickMessage = msg.name + " has kicked you from channel: " + msg.params[0] + ".";
+                if(msg.params.size() > 2)
+                {
+                    kickMessage += " Reason: " + msg.params[2];
+                }
+                else
+                {
+                    kickMessage += " No reason given";
+                }
+                worker->display(QString::fromStdString(kickMessage), QString("main"), false);
+            }
+            else if (msg.command == "TOPIC")
+            {
+                if(channelMap.find(msg.params[0]) != channelMap.end())
+                {
+                     worker->display(QString::fromStdString("Topic is: " + msg.params[1]), QString::fromStdString(msg.params[0]), false);
+                }
+                else
+                {
+                     worker->display(QString::fromStdString("Topic for " + msg.params[0] + " is " + msg.params[1]), QString("main"), false);
+                }
+
+            }
+            else if (msg.command == "INVITE")
+            {
+                worker->display(QString::fromStdString(msg.name + " Has invited you to join channel " + msg.params[1] + "."), QString("main"), false);
+            }
+            else if (msg.command == "WALLOPS")
+            {
+                if(msg.name != client.username)
+                {
+                    std::string wallopString = "WALLOP'ing from " + msg.name + ": " + msg.params[0];
+                    worker->display(QString::fromStdString(wallopString), QString("main"), false);
+                }
             }
             else
             {
@@ -202,7 +315,16 @@ void MainWindow::on_send_clicked()
             Parsing::IRC_message msg(command + "\r\n");
             if (msg.command == "HELP")
             {
-                displayMessage("A helpful message", ui);
+                std::string helpMessage = std::string("************************************************************************************\n")
+                                      + "To see list of online users, type '/USERS'\n"
+                                      + "To send a message to a user, type '/PRIVMSG <user> :<your message here>'\n"
+                                      + "To create or join a channel, type '/JOIN <#channelName>'\n"
+                                      + "Be careful to not use /JOIN on an invalid channel name (without leading #)\n"
+                                      + "To see the created channels, type '/LIST'\n"
+                                      + "To send a message to a channel, type '/PRIVMSG <#channelName> :<your message here>'\n"
+                                      + "A more thorough explanation can be found in the readme file.\n"
+                                      + "************************************************************************************\n";
+                displayMessage(helpMessage, ui);
             }
             else if (msg.command == "QUIT")
             {
@@ -240,6 +362,41 @@ void MainWindow::on_send_clicked()
                     slotCloseTab(toDelete);
                 }
                 client.send(command);
+            }
+            else if (msg.command == "NICK")
+            {
+                client.username = msg.params[0];
+                //update username bar.
+                worker->username(QString::fromStdString(client.username));
+                client.send(command);
+            }
+            else if (msg.command == "VERSION")
+            {
+                worker->display(QString("Client version 2.0"), QString("main"), false);
+                client.send(command);
+            }
+            else if (msg.command == "TOPIC")
+            {
+                //if not in main tab
+                if(ui->tabWidget->currentIndex() > 0){
+                    if (msg.params.size() == 0)
+                    {
+                        //create command to just get the channel name
+                        std::string toSend = "TOPIC " + ui->tabWidget->currentWidget()->objectName().toStdString();
+                        client.send(toSend);
+
+                    }
+                    else if (msg.params.size() > 0)
+                    {
+                        cout << msg.params[0] << endl;
+                        std::string toSend = "TOPIC " + ui->tabWidget->currentWidget()->objectName().toStdString() + " :" + msg.params[0];
+                        client.send(toSend);
+                    }
+                }
+                else
+                {
+                    client.send(command);
+                }
             }
             else
             {
@@ -344,6 +501,20 @@ void MainWindow::slotCloseTab(int index)
     }
 }
 
+void MainWindow::closeTabByNameSlot(QString tabName)
+{
+    if(channelMap.find(tabName.toStdString()) != channelMap.end())
+    {
+        //get the channel
+        QWidget * tab = channelMap[tabName.toStdString()];
+        int toDelete = ui->tabWidget->indexOf(tab);
+        if(toDelete >0)
+        {
+            delete tab;
+            channelMap.erase(tabName.toStdString());
+        }
+    }
+}
 
 void MainWindow::on_password_returnPressed()
 {
@@ -380,6 +551,11 @@ void MainWindow::connectionFailedSlot(QString Qmsg)
 void MainWindow::updateStatusSlot(QString status)
 {
     ui->statusBar->showMessage(status);
+}
+
+void MainWindow::updateUsernameSlot(QString username)
+{
+    ui->username->setText(username);
 }
 
 

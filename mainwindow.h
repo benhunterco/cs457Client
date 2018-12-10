@@ -51,6 +51,10 @@ private slots:
 
     void updateStatusSlot(QString status);
 
+    void updateUsernameSlot(QString username);
+
+    void closeTabByNameSlot(QString tabName);
+
 private:
     Ui::MainWindow *ui;
     cs457::tcpClientSocket clientSocket;
