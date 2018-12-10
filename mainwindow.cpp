@@ -51,7 +51,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::displayMessage(string msg, Ui::MainWindow *myui, string tab /*= "main*/, bool focus /*=false*/)
 {
-    cout << "here" << endl;
+    if(debug)
+        cout << "begin display" << endl;
     if(tab == "main"){
 
         string displaymsg = "server: " + msg + "\n";
@@ -70,7 +71,8 @@ void MainWindow::displayMessage(string msg, Ui::MainWindow *myui, string tab /*=
             myui->tabWidget->setCurrentWidget(tabToDisplay);
 
     }
-    cout << "tohere" << endl;
+    if(debug)
+        cout << "end display" << endl;
 
 }
 
@@ -103,7 +105,8 @@ void MainWindow::displayMessageSlot(QString Qmessage, QString Qtab, bool focus /
 void MainWindow::receive()
 {
     while(continueReceiveing){
-        cout << "Attempting to recv from socket." << endl;
+        if(debug)
+            cout << "Attempting to recv from socket." << endl;
         string rcvmsg;
         ssize_t v;
         tie(rcvmsg,v) =  clientSocket.recvString(4096,false);
@@ -276,7 +279,8 @@ void MainWindow::receive()
         }
         else
         {
-            cout << "Read from empty socket";
+            if(debug)
+                cout << "Read from empty socket";
             continueReceiveing = false;
             client.connected = false;
             //show some sort of message?
