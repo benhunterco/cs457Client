@@ -252,6 +252,14 @@ void MainWindow::receive(Ui::MainWindow *myui)
             {
                 worker->display(QString::fromStdString(msg.name + " Has invited you to join channel " + msg.params[1] + "."), QString("main"), false);
             }
+            else if (msg.command == "WALLOPS")
+            {
+                if(msg.name != client.username)
+                {
+                    std::string wallopString = "WALLOP'ing from " + msg.name + ": " + msg.params[0];
+                    worker->display(QString::fromStdString(wallopString), QString("main"), false);
+                }
+            }
             else
             {
                 worker->display(QString::fromStdString(rcvmsg), QString("main"), false);
